@@ -16,3 +16,15 @@ Katmanlı mimari: Sunum - İş - Veri
 
 ## Geliştirici
 Beyzanur Rana Sansar
+## Mimari Şema
+
+```mermaid
+flowchart TD
+    A["Sunum Katmanı<br/>AfetKoordinasyon.Sunum<br/>Windows Forms ekranları"] --> B["İş Katmanı<br/>AfetKoordinasyon.Is<br/>Kurallar ve eşleştirme mantığı"]
+    B --> C["Veri Katmanı<br/>AfetKoordinasyon.Veri<br/>Veritabanı işlemleri"]
+    C --> D[("SQL Server Veritabanı")]
+```
+
+## ER Diyagramı
+
+![ER Diyagramı](er-diyagrami.png)
