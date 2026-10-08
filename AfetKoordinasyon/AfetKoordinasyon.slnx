@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="AfetKoordinasyon.Is/AfetKoordinasyon.Is.csproj" Id="961dcd57-5ee7-4987-8979-b8384fd83954" />
+  <Project Path="AfetKoordinasyon.Sunum/AfetKoordinasyon.Sunum.csproj" Id="daeaa6ef-d176-4657-8692-5fa04d359462" />
+  <Project Path="AfetKoordinasyon.Veri/AfetKoordinasyon.Veri.csproj" Id="ba133d71-a9bb-4237-9882-dd36a46fb3c6" />
+</Solution>
