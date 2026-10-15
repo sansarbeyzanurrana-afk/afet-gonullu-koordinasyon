@@ -16,6 +16,7 @@ namespace AfetKoordinasyon.Sunum
             InitializeComponent();
             Load += Form1_Load;
             btnEkle.Click += btnEkle_Click;
+            dgvIhtiyaclar.CellClick += dgvIhtiyaclar_CellClick;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -69,6 +70,70 @@ namespace AfetKoordinasyon.Sunum
                 MessageBox.Show(ex.Message, "Hata",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+        private void btnGuncelle_Click(object sender, EventArgs e)
+        {
+            if (dgvIhtiyaclar.CurrentRow == null)
+            {
+                MessageBox.Show("Önce listeden bir ihtiyaç seçin.");
+                return;
+            }
+            try
+            {
+                int id = (int)dgvIhtiyaclar.CurrentRow.Cells["No"].Value;
+                _ihtiyacServisi.Guncelle(new Ihtiyac
+                {
+                    IhtiyacId = id,
+                    Tur = txtTur.Text.Trim(),
+                    Aciklama = txtAciklama.Text.Trim(),
+                    Miktar = (int)nudMiktar.Value,
+                    KonumId = (int)cmbKonum.SelectedValue
+                });
+                MessageBox.Show("İhtiyaç güncellendi.", "Bilgi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ListeyiYenile();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hata",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void btnSil_Click(object sender, EventArgs e)
+        {
+            if (dgvIhtiyaclar.CurrentRow == null)
+            {
+                MessageBox.Show("Önce listeden bir ihtiyaç seçin.");
+                return;
+            }
+            var cevap = MessageBox.Show("Seçili ihtiyaç silinsin mi?", "Onay",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (cevap != DialogResult.Yes) return;
+
+            try
+            {
+                int id = (int)dgvIhtiyaclar.CurrentRow.Cells["No"].Value;
+                _ihtiyacServisi.Sil(id);
+                MessageBox.Show("İhtiyaç silindi.", "Bilgi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ListeyiYenile();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hata",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void dgvIhtiyaclar_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            var satir = dgvIhtiyaclar.Rows[e.RowIndex];
+            txtTur.Text = satir.Cells["Tur"].Value?.ToString();
+            txtAciklama.Text = satir.Cells["Aciklama"].Value?.ToString();
+            nudMiktar.Value = Convert.ToDecimal(satir.Cells["Miktar"].Value);
+            cmbKonum.SelectedIndex = cmbKonum.FindString(satir.Cells["Konum"].Value?.ToString());
         }
     }
 }

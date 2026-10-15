@@ -38,6 +38,8 @@
             this.btnEkle = new System.Windows.Forms.Button();
             this.dgvIhtiyaclar = new System.Windows.Forms.DataGridView();
             this.label4 = new System.Windows.Forms.Label();
+            this.btnGuncelle = new System.Windows.Forms.Button();
+            this.btnSil = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nudMiktar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvIhtiyaclar)).BeginInit();
             this.SuspendLayout();
@@ -71,7 +73,6 @@
             this.label1.Size = new System.Drawing.Size(27, 16);
             this.label1.TabIndex = 3;
             this.label1.Text = "Tür";
-           
             // 
             // label2
             // 
@@ -127,11 +128,33 @@
             this.label4.TabIndex = 9;
             this.label4.Text = "Konum";
             // 
+            // btnGuncelle
+            // 
+            this.btnGuncelle.Location = new System.Drawing.Point(413, 189);
+            this.btnGuncelle.Name = "btnGuncelle";
+            this.btnGuncelle.Size = new System.Drawing.Size(100, 23);
+            this.btnGuncelle.TabIndex = 10;
+            this.btnGuncelle.Text = "Güncelle";
+            this.btnGuncelle.UseVisualStyleBackColor = true;
+            this.btnGuncelle.Click += new System.EventHandler(this.btnGuncelle_Click);
+            // 
+            // btnSil
+            // 
+            this.btnSil.Location = new System.Drawing.Point(413, 240);
+            this.btnSil.Name = "btnSil";
+            this.btnSil.Size = new System.Drawing.Size(75, 23);
+            this.btnSil.TabIndex = 11;
+            this.btnSil.Text = "Sil";
+            this.btnSil.UseVisualStyleBackColor = true;
+            this.btnSil.Click += new System.EventHandler(this.btnSil_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnSil);
+            this.Controls.Add(this.btnGuncelle);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.dgvIhtiyaclar);
             this.Controls.Add(this.btnEkle);
@@ -163,6 +186,8 @@
         private System.Windows.Forms.Button btnEkle;
         private System.Windows.Forms.DataGridView dgvIhtiyaclar;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnGuncelle;
+        private System.Windows.Forms.Button btnSil;
     }
 }
 

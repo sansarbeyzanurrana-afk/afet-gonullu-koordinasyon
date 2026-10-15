@@ -47,5 +47,41 @@ namespace AfetKoordinasyon.Is
                 db.SaveChanges();
             }
         }
+        public void Guncelle(Ihtiyac ihtiyac)
+        {
+            if (string.IsNullOrWhiteSpace(ihtiyac.Tur))
+                throw new ArgumentException("İhtiyaç türü boş olamaz.");
+            if (ihtiyac.Miktar <= 0)
+                throw new ArgumentException("Miktar 0'dan büyük olmalı.");
+
+            using (var db = new AfetDbContext())
+            {
+                var mevcut = db.Ihtiyaclar.Find(ihtiyac.IhtiyacId);
+                if (mevcut == null)
+                    throw new ArgumentException("İhtiyaç bulunamadı.");
+
+                mevcut.Tur = ihtiyac.Tur;
+                mevcut.Aciklama = ihtiyac.Aciklama;
+                mevcut.Miktar = ihtiyac.Miktar;
+                mevcut.KonumId = ihtiyac.KonumId;
+                db.SaveChanges();
+            }
+        }
+
+        public void Sil(int ihtiyacId)
+        {
+            using (var db = new AfetDbContext())
+            {
+                if (db.Eslesmeler.Any(e => e.IhtiyacId == ihtiyacId))
+                    throw new InvalidOperationException("Eşleşmesi olan ihtiyaç silinemez.");
+
+                var ihtiyac = db.Ihtiyaclar.Find(ihtiyacId);
+                if (ihtiyac == null)
+                    throw new ArgumentException("İhtiyaç bulunamadı.");
+
+                db.Ihtiyaclar.Remove(ihtiyac);
+                db.SaveChanges();
+            }
+        }
     }
 }
