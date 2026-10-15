@@ -92,6 +92,10 @@
       <Project>{961dcd57-5ee7-4987-8979-b8384fd83954}</Project>
       <Name>AfetKoordinasyon.Is</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AfetKoordinasyon.Veri\AfetKoordinasyon.Veri.csproj">
+      <Project>{ba133d71-a9bb-4237-9882-dd36a46fb3c6}</Project>
+      <Name>AfetKoordinasyon.Veri</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
