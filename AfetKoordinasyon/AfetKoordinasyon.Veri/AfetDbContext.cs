@@ -13,6 +13,8 @@ namespace AfetKoordinasyon.Veri
         public DbSet<Gonullu> Gonulluler { get; set; }
         public DbSet<Ihtiyac> Ihtiyaclar { get; set; }
         public DbSet<Eslesme> Eslesmeler { get; set; }
+        public DbSet<Kullanici> Kullanicilar { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

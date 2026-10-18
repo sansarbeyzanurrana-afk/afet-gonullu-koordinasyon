@@ -70,6 +70,7 @@ namespace AfetKoordinasyon.Is
 
         public void Sil(int ihtiyacId)
         {
+            Oturum.RolGerekli("Koordinator");
             using (var db = new AfetDbContext())
             {
                 if (db.Eslesmeler.Any(e => e.IhtiyacId == ihtiyacId))

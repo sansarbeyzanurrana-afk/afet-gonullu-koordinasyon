@@ -17,6 +17,9 @@ namespace AfetKoordinasyon.Sunum
             Load += Form1_Load;
             btnEkle.Click += btnEkle_Click;
             dgvIhtiyaclar.CellClick += dgvIhtiyaclar_CellClick;
+            btnSil.Enabled = Oturum.AktifKullanici.Rol == "Koordinator";
+            Text = "İhtiyaç Yönetimi - " + Oturum.AktifKullanici.AdSoyad
+                   + " (" + Oturum.AktifKullanici.Rol + ")";
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -134,6 +137,12 @@ namespace AfetKoordinasyon.Sunum
             txtAciklama.Text = satir.Cells["Aciklama"].Value?.ToString();
             nudMiktar.Value = Convert.ToDecimal(satir.Cells["Miktar"].Value);
             cmbKonum.SelectedIndex = cmbKonum.FindString(satir.Cells["Konum"].Value?.ToString());
+        }
+
+        private void btnCikis_Click(object sender, EventArgs e)
+        {
+            Oturum.Cikis();
+            Close();
         }
     }
 }
