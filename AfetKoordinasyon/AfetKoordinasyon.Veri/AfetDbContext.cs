@@ -15,6 +15,7 @@ namespace AfetKoordinasyon.Veri
         public DbSet<Eslesme> Eslesmeler { get; set; }
         public DbSet<Kullanici> Kullanicilar { get; set; }
 
+        public DbSet<Kategori> Kategoriler { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

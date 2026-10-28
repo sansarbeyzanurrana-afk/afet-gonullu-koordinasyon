@@ -84,5 +84,5 @@ namespace AfetKoordinasyon.Is
                 db.SaveChanges();
             }
         }
-    }
+    } 
 }

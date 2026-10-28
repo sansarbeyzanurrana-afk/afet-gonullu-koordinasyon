@@ -60,12 +60,17 @@
     <Compile Include="Migrations\202610181537497_KullaniciEklendi.Designer.cs">
       <DependentUpon>202610181537497_KullaniciEklendi.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202610281515089_KategoriEklendi.cs" />
+    <Compile Include="Migrations\202610281515089_KategoriEklendi.Designer.cs">
+      <DependentUpon>202610281515089_KategoriEklendi.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Varliklar\Durum.cs" />
     <Compile Include="Varliklar\Eslesme.cs" />
     <Compile Include="Varliklar\Gonullu.cs" />
     <Compile Include="Varliklar\Ihtiyac.cs" />
+    <Compile Include="Varliklar\Kategori.cs" />
     <Compile Include="Varliklar\Konum.cs" />
     <Compile Include="Varliklar\Kullanici.cs" />
   </ItemGroup>
@@ -79,6 +84,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202610181537497_KullaniciEklendi.resx">
       <DependentUpon>202610181537497_KullaniciEklendi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202610281515089_KategoriEklendi.resx">
+      <DependentUpon>202610281515089_KategoriEklendi.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

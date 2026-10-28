@@ -16,6 +16,8 @@ namespace AfetKoordinasyon.Veri.Varliklar
         public virtual Konum Konum { get; set; }
         public int DurumId { get; set; }
         public virtual Durum Durum { get; set; }
+        public int KategoriId { get; set; }
+        public virtual Kategori Kategori { get; set; }
         public virtual ICollection<Eslesme> Eslesmeler { get; set; }
     }
 }
