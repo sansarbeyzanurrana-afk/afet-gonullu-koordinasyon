@@ -53,6 +53,7 @@ namespace AfetKoordinasyon.Is
 
                 ihtiyac.DurumId = db.Durumlar.Single(d => d.Ad == "Bekliyor").DurumId;
                 ihtiyac.Tarih = DateTime.Now;
+                ihtiyac.KullaniciId = Oturum.AktifKullanici.Id;
                 db.Ihtiyaclar.Add(ihtiyac);
                 db.SaveChanges();
             }
@@ -72,6 +73,9 @@ namespace AfetKoordinasyon.Is
                 if (mevcut == null)
                     throw new ArgumentException("İhtiyaç bulunamadı.");
 
+
+                 if (Oturum.AktifKullanici.Rol != "Koordinator" && mevcut.KullaniciId != Oturum.AktifKullanici.Id)
+                    throw new UnauthorizedAccessException("Sadece kendi eklediğiniz ihtiyacı güncelleyebilirsiniz.");
                 mevcut.Tur = ihtiyac.Tur;
                 mevcut.Aciklama = ihtiyac.Aciklama;
                 mevcut.Miktar = ihtiyac.Miktar;
