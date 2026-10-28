@@ -41,27 +41,30 @@
             this.btnGuncelle = new System.Windows.Forms.Button();
             this.btnSil = new System.Windows.Forms.Button();
             this.btnCikis = new System.Windows.Forms.Button();
+            this.cmbKategori = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nudMiktar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvIhtiyaclar)).BeginInit();
             this.SuspendLayout();
             // 
             // txtTur
             // 
-            this.txtTur.Location = new System.Drawing.Point(12, 34);
+            this.txtTur.Location = new System.Drawing.Point(13, 12);
             this.txtTur.Name = "txtTur";
             this.txtTur.Size = new System.Drawing.Size(100, 22);
             this.txtTur.TabIndex = 0;
             // 
             // txtAciklama
             // 
-            this.txtAciklama.Location = new System.Drawing.Point(12, 86);
+            this.txtAciklama.Location = new System.Drawing.Point(12, 54);
             this.txtAciklama.Name = "txtAciklama";
             this.txtAciklama.Size = new System.Drawing.Size(100, 22);
             this.txtAciklama.TabIndex = 1;
+            this.txtAciklama.TextChanged += new System.EventHandler(this.txtAciklama_TextChanged);
             // 
             // nudMiktar
             // 
-            this.nudMiktar.Location = new System.Drawing.Point(12, 156);
+            this.nudMiktar.Location = new System.Drawing.Point(12, 105);
             this.nudMiktar.Name = "nudMiktar";
             this.nudMiktar.Size = new System.Drawing.Size(120, 22);
             this.nudMiktar.TabIndex = 2;
@@ -69,7 +72,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(182, 34);
+            this.label1.Location = new System.Drawing.Point(175, 18);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(27, 16);
             this.label1.TabIndex = 3;
@@ -78,7 +81,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(185, 86);
+            this.label2.Location = new System.Drawing.Point(165, 54);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(63, 16);
             this.label2.TabIndex = 4;
@@ -87,7 +90,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(185, 156);
+            this.label3.Location = new System.Drawing.Point(165, 107);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(43, 16);
             this.label3.TabIndex = 5;
@@ -96,7 +99,7 @@
             // cmbKonum
             // 
             this.cmbKonum.FormattingEnabled = true;
-            this.cmbKonum.Location = new System.Drawing.Point(13, 225);
+            this.cmbKonum.Location = new System.Drawing.Point(11, 161);
             this.cmbKonum.Name = "cmbKonum";
             this.cmbKonum.Size = new System.Drawing.Size(121, 24);
             this.cmbKonum.TabIndex = 6;
@@ -113,7 +116,7 @@
             // dgvIhtiyaclar
             // 
             this.dgvIhtiyaclar.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvIhtiyaclar.Location = new System.Drawing.Point(12, 288);
+            this.dgvIhtiyaclar.Location = new System.Drawing.Point(13, 336);
             this.dgvIhtiyaclar.Name = "dgvIhtiyaclar";
             this.dgvIhtiyaclar.RowHeadersWidth = 51;
             this.dgvIhtiyaclar.RowTemplate.Height = 24;
@@ -123,7 +126,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(188, 225);
+            this.label4.Location = new System.Drawing.Point(165, 169);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(48, 16);
             this.label4.TabIndex = 9;
@@ -159,11 +162,31 @@
             this.btnCikis.UseVisualStyleBackColor = true;
             this.btnCikis.Click += new System.EventHandler(this.btnCikis_Click);
             // 
+            // cmbKategori
+            // 
+            this.cmbKategori.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbKategori.FormattingEnabled = true;
+            this.cmbKategori.Location = new System.Drawing.Point(11, 224);
+            this.cmbKategori.Name = "cmbKategori";
+            this.cmbKategori.Size = new System.Drawing.Size(121, 24);
+            this.cmbKategori.TabIndex = 13;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(168, 224);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(57, 16);
+            this.label5.TabIndex = 14;
+            this.label5.Text = "Kategori";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(800, 514);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.cmbKategori);
             this.Controls.Add(this.btnCikis);
             this.Controls.Add(this.btnSil);
             this.Controls.Add(this.btnGuncelle);
@@ -201,6 +224,8 @@
         private System.Windows.Forms.Button btnGuncelle;
         private System.Windows.Forms.Button btnSil;
         private System.Windows.Forms.Button btnCikis;
+        private System.Windows.Forms.ComboBox cmbKategori;
+        private System.Windows.Forms.Label label5;
     }
 }
 

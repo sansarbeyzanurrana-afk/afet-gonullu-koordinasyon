@@ -10,6 +10,8 @@ namespace AfetKoordinasyon.Sunum
     {
         private readonly IhtiyacServisi _ihtiyacServisi = new IhtiyacServisi();
         private readonly KonumServisi _konumServisi = new KonumServisi();
+        private readonly KategoriServisi _kategoriServisi = new KategoriServisi();
+
 
         public Form1()
         {
@@ -29,6 +31,10 @@ namespace AfetKoordinasyon.Sunum
                 .ToList();
             cmbKonum.DisplayMember = "Ad";
             cmbKonum.ValueMember = "KonumId";
+            cmbKategori.DataSource = _kategoriServisi.Listele();
+            cmbKategori.DisplayMember = "Ad";
+            cmbKategori.ValueMember = "Id";
+
 
             ListeyiYenile();
         }
@@ -42,6 +48,7 @@ namespace AfetKoordinasyon.Sunum
                     i.Tur,
                     i.Aciklama,
                     i.Miktar,
+                    Kategori = i.Kategori.Ad,
                     Konum = i.Konum.Il + " / " + i.Konum.Ilce,
                     Durum = i.Durum.Ad,
                     i.Tarih
@@ -58,7 +65,8 @@ namespace AfetKoordinasyon.Sunum
                     Tur = txtTur.Text.Trim(),
                     Aciklama = txtAciklama.Text.Trim(),
                     Miktar = (int)nudMiktar.Value,
-                    KonumId = (int)cmbKonum.SelectedValue
+                    KonumId = (int)cmbKonum.SelectedValue,
+                    KategoriId = (int)cmbKategori.SelectedValue
                 });
 
                 MessageBox.Show("İhtiyaç kaydedildi.", "Bilgi",
@@ -90,7 +98,8 @@ namespace AfetKoordinasyon.Sunum
                     Tur = txtTur.Text.Trim(),
                     Aciklama = txtAciklama.Text.Trim(),
                     Miktar = (int)nudMiktar.Value,
-                    KonumId = (int)cmbKonum.SelectedValue
+                    KonumId = (int)cmbKonum.SelectedValue,
+                    KategoriId = (int)cmbKategori.SelectedValue
                 });
                 MessageBox.Show("İhtiyaç güncellendi.", "Bilgi",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -137,12 +146,18 @@ namespace AfetKoordinasyon.Sunum
             txtAciklama.Text = satir.Cells["Aciklama"].Value?.ToString();
             nudMiktar.Value = Convert.ToDecimal(satir.Cells["Miktar"].Value);
             cmbKonum.SelectedIndex = cmbKonum.FindString(satir.Cells["Konum"].Value?.ToString());
+            cmbKategori.SelectedIndex = cmbKategori.FindStringExact(satir.Cells["Kategori"].Value?.ToString());
         }
 
         private void btnCikis_Click(object sender, EventArgs e)
         {
             Oturum.Cikis();
             Close();
+        }
+
+        private void txtAciklama_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

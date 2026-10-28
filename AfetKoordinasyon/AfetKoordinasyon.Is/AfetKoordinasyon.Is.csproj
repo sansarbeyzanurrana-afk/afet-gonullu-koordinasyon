@@ -70,6 +70,7 @@
     <Compile Include="EslesmeServisi.cs" />
     <Compile Include="GonulluServisi.cs" />
     <Compile Include="IhtiyacServisi.cs" />
+    <Compile Include="KategoriServisi.cs" />
     <Compile Include="KonumServisi.cs" />
     <Compile Include="KullaniciServisi.cs" />
     <Compile Include="Oturum.cs" />
