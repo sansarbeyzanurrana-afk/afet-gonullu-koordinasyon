@@ -19,7 +19,7 @@ namespace AfetKoordinasyon.Sunum
             Load += Form1_Load;
             btnEkle.Click += btnEkle_Click;
             dgvIhtiyaclar.CellClick += dgvIhtiyaclar_CellClick;
-            btnSil.Enabled = Oturum.AktifKullanici.Rol == "Koordinator";
+            btnSil.Enabled = string.Equals(Oturum.AktifKullanici.Rol?.Trim(), "Koordinator", StringComparison.OrdinalIgnoreCase);
             Text = "İhtiyaç Yönetimi - " + Oturum.AktifKullanici.AdSoyad
                    + " (" + Oturum.AktifKullanici.Rol + ")";
         }
@@ -159,5 +159,11 @@ namespace AfetKoordinasyon.Sunum
         {
 
         }
+
+       
+        private void btnEslestirme_Click(object sender, EventArgs e)
+        {
+            new EslestirmeForm().ShowDialog();
+        }
     }
-}
+    }

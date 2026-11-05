@@ -43,6 +43,7 @@
             this.btnCikis = new System.Windows.Forms.Button();
             this.cmbKategori = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.btnEslestirme = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nudMiktar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvIhtiyaclar)).BeginInit();
             this.SuspendLayout();
@@ -180,11 +181,22 @@
             this.label5.TabIndex = 14;
             this.label5.Text = "Kategori";
             // 
+            // btnEslestirme
+            // 
+            this.btnEslestirme.Location = new System.Drawing.Point(634, 83);
+            this.btnEslestirme.Name = "btnEslestirme";
+            this.btnEslestirme.Size = new System.Drawing.Size(96, 44);
+            this.btnEslestirme.TabIndex = 15;
+            this.btnEslestirme.Text = "Eşleştirme";
+            this.btnEslestirme.UseVisualStyleBackColor = true;
+            this.btnEslestirme.Click += new System.EventHandler(this.btnEslestirme_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 514);
+            this.Controls.Add(this.btnEslestirme);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.cmbKategori);
             this.Controls.Add(this.btnCikis);
@@ -226,6 +238,7 @@
         private System.Windows.Forms.Button btnCikis;
         private System.Windows.Forms.ComboBox cmbKategori;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button btnEslestirme;
     }
 }
 

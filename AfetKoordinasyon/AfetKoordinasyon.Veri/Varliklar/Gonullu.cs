@@ -9,6 +9,7 @@ namespace AfetKoordinasyon.Veri.Varliklar
         [Required, StringLength(100)] public string AdSoyad { get; set; }
         [Required, StringLength(15)] public string Telefon { get; set; }
         [StringLength(200)] public string Beceri { get; set; }
+        public bool MusaitMi { get; set; } = true;
 
         public int KonumId { get; set; }
         public virtual Konum Konum { get; set; }

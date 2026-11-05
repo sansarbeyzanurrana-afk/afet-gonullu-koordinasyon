@@ -1,5 +1,6 @@
-﻿using System;
-using AfetKoordinasyon.Veri.Varliklar;
+﻿using AfetKoordinasyon.Veri.Varliklar;
+using System;
+using System.Linq;
 
 namespace AfetKoordinasyon.Is
 {
@@ -40,7 +41,7 @@ namespace AfetKoordinasyon.Is
             if (!Aktif)
                 throw new UnauthorizedAccessException(
                     "Oturum süresi doldu, lütfen tekrar giriş yapın.");
-            if (Array.IndexOf(roller, AktifKullanici.Rol) < 0)
+            if (!roller.Any(r => string.Equals(r, AktifKullanici.Rol?.Trim(), StringComparison.OrdinalIgnoreCase)))
                 throw new UnauthorizedAccessException("Bu işlem için yetkiniz yok.");
             sonIslem = DateTime.Now;
         }

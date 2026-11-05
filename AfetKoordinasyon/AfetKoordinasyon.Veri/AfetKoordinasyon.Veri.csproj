@@ -68,6 +68,10 @@
     <Compile Include="Migrations\202610281630337_IhtiyacKullaniciEklendi.Designer.cs">
       <DependentUpon>202610281630337_IhtiyacKullaniciEklendi.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202611051010273_MusaitMiEkle.cs" />
+    <Compile Include="Migrations\202611051010273_MusaitMiEkle.Designer.cs">
+      <DependentUpon>202611051010273_MusaitMiEkle.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Varliklar\Durum.cs" />
@@ -94,6 +98,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202610281630337_IhtiyacKullaniciEklendi.resx">
       <DependentUpon>202610281630337_IhtiyacKullaniciEklendi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202611051010273_MusaitMiEkle.resx">
+      <DependentUpon>202611051010273_MusaitMiEkle.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
