@@ -50,14 +50,14 @@
             // 
             // txtTur
             // 
-            this.txtTur.Location = new System.Drawing.Point(13, 12);
+            this.txtTur.Location = new System.Drawing.Point(77, 12);
             this.txtTur.Name = "txtTur";
             this.txtTur.Size = new System.Drawing.Size(100, 22);
             this.txtTur.TabIndex = 0;
             // 
             // txtAciklama
             // 
-            this.txtAciklama.Location = new System.Drawing.Point(12, 54);
+            this.txtAciklama.Location = new System.Drawing.Point(77, 48);
             this.txtAciklama.Name = "txtAciklama";
             this.txtAciklama.Size = new System.Drawing.Size(100, 22);
             this.txtAciklama.TabIndex = 1;
@@ -65,7 +65,7 @@
             // 
             // nudMiktar
             // 
-            this.nudMiktar.Location = new System.Drawing.Point(12, 105);
+            this.nudMiktar.Location = new System.Drawing.Point(68, 97);
             this.nudMiktar.Name = "nudMiktar";
             this.nudMiktar.Size = new System.Drawing.Size(120, 22);
             this.nudMiktar.TabIndex = 2;
@@ -73,7 +73,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(175, 18);
+            this.label1.Location = new System.Drawing.Point(12, 15);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(27, 16);
             this.label1.TabIndex = 3;
@@ -82,7 +82,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(165, 54);
+            this.label2.Location = new System.Drawing.Point(8, 51);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(63, 16);
             this.label2.TabIndex = 4;
@@ -91,7 +91,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(165, 107);
+            this.label3.Location = new System.Drawing.Point(8, 103);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(43, 16);
             this.label3.TabIndex = 5;
@@ -100,14 +100,14 @@
             // cmbKonum
             // 
             this.cmbKonum.FormattingEnabled = true;
-            this.cmbKonum.Location = new System.Drawing.Point(11, 161);
+            this.cmbKonum.Location = new System.Drawing.Point(62, 159);
             this.cmbKonum.Name = "cmbKonum";
             this.cmbKonum.Size = new System.Drawing.Size(121, 24);
             this.cmbKonum.TabIndex = 6;
             // 
             // btnEkle
             // 
-            this.btnEkle.Location = new System.Drawing.Point(413, 135);
+            this.btnEkle.Location = new System.Drawing.Point(413, 104);
             this.btnEkle.Name = "btnEkle";
             this.btnEkle.Size = new System.Drawing.Size(75, 23);
             this.btnEkle.TabIndex = 7;
@@ -117,17 +117,17 @@
             // dgvIhtiyaclar
             // 
             this.dgvIhtiyaclar.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvIhtiyaclar.Location = new System.Drawing.Point(13, 336);
+            this.dgvIhtiyaclar.Location = new System.Drawing.Point(15, 295);
             this.dgvIhtiyaclar.Name = "dgvIhtiyaclar";
             this.dgvIhtiyaclar.RowHeadersWidth = 51;
             this.dgvIhtiyaclar.RowTemplate.Height = 24;
-            this.dgvIhtiyaclar.Size = new System.Drawing.Size(696, 150);
+            this.dgvIhtiyaclar.Size = new System.Drawing.Size(745, 194);
             this.dgvIhtiyaclar.TabIndex = 8;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(165, 169);
+            this.label4.Location = new System.Drawing.Point(8, 162);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(48, 16);
             this.label4.TabIndex = 9;
@@ -135,9 +135,9 @@
             // 
             // btnGuncelle
             // 
-            this.btnGuncelle.Location = new System.Drawing.Point(413, 189);
+            this.btnGuncelle.Location = new System.Drawing.Point(413, 159);
             this.btnGuncelle.Name = "btnGuncelle";
-            this.btnGuncelle.Size = new System.Drawing.Size(100, 23);
+            this.btnGuncelle.Size = new System.Drawing.Size(87, 23);
             this.btnGuncelle.TabIndex = 10;
             this.btnGuncelle.Text = "Güncelle";
             this.btnGuncelle.UseVisualStyleBackColor = true;
@@ -145,7 +145,7 @@
             // 
             // btnSil
             // 
-            this.btnSil.Location = new System.Drawing.Point(413, 240);
+            this.btnSil.Location = new System.Drawing.Point(413, 221);
             this.btnSil.Name = "btnSil";
             this.btnSil.Size = new System.Drawing.Size(75, 23);
             this.btnSil.TabIndex = 11;
@@ -155,7 +155,7 @@
             // 
             // btnCikis
             // 
-            this.btnCikis.Location = new System.Drawing.Point(413, 83);
+            this.btnCikis.Location = new System.Drawing.Point(413, 51);
             this.btnCikis.Name = "btnCikis";
             this.btnCikis.Size = new System.Drawing.Size(75, 23);
             this.btnCikis.TabIndex = 12;
@@ -167,7 +167,7 @@
             // 
             this.cmbKategori.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbKategori.FormattingEnabled = true;
-            this.cmbKategori.Location = new System.Drawing.Point(11, 224);
+            this.cmbKategori.Location = new System.Drawing.Point(77, 221);
             this.cmbKategori.Name = "cmbKategori";
             this.cmbKategori.Size = new System.Drawing.Size(121, 24);
             this.cmbKategori.TabIndex = 13;
@@ -175,7 +175,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(168, 224);
+            this.label5.Location = new System.Drawing.Point(8, 224);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(57, 16);
             this.label5.TabIndex = 14;
@@ -183,7 +183,7 @@
             // 
             // btnEslestirme
             // 
-            this.btnEslestirme.Location = new System.Drawing.Point(634, 83);
+            this.btnEslestirme.Location = new System.Drawing.Point(613, 134);
             this.btnEslestirme.Name = "btnEslestirme";
             this.btnEslestirme.Size = new System.Drawing.Size(96, 44);
             this.btnEslestirme.TabIndex = 15;
@@ -195,6 +195,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImage = global::AfetKoordinasyon.Sunum.Properties.Resources.deprem;
             this.ClientSize = new System.Drawing.Size(800, 514);
             this.Controls.Add(this.btnEslestirme);
             this.Controls.Add(this.label5);

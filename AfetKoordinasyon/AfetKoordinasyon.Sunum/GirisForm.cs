@@ -39,5 +39,10 @@ namespace AfetKoordinasyon.Sunum
             using (var f = new KayitForm())
                 f.ShowDialog();
         }
+
+        private void GirisForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

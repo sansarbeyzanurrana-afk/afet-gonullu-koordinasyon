@@ -45,22 +45,22 @@
             this.dgvIhtiyaclar.Name = "dgvIhtiyaclar";
             this.dgvIhtiyaclar.RowHeadersWidth = 51;
             this.dgvIhtiyaclar.RowTemplate.Height = 24;
-            this.dgvIhtiyaclar.Size = new System.Drawing.Size(325, 150);
+            this.dgvIhtiyaclar.Size = new System.Drawing.Size(440, 190);
             this.dgvIhtiyaclar.TabIndex = 0;
             this.dgvIhtiyaclar.SelectionChanged += new System.EventHandler(this.dgvIhtiyaclar_SelectionChanged);
             // 
             // dgvGonulluler
             // 
             this.dgvGonulluler.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvGonulluler.Location = new System.Drawing.Point(458, 12);
+            this.dgvGonulluler.Location = new System.Drawing.Point(528, 12);
             this.dgvGonulluler.Name = "dgvGonulluler";
             this.dgvGonulluler.RowHeadersWidth = 51;
-            this.dgvGonulluler.Size = new System.Drawing.Size(330, 150);
+            this.dgvGonulluler.Size = new System.Drawing.Size(457, 190);
             this.dgvGonulluler.TabIndex = 1;
             // 
             // btnEslestir
             // 
-            this.btnEslestir.Location = new System.Drawing.Point(245, 208);
+            this.btnEslestir.Location = new System.Drawing.Point(363, 229);
             this.btnEslestir.Name = "btnEslestir";
             this.btnEslestir.Size = new System.Drawing.Size(264, 86);
             this.btnEslestir.TabIndex = 2;
@@ -75,13 +75,13 @@
             this.dgvEslesmisler.Name = "dgvEslesmisler";
             this.dgvEslesmisler.RowHeadersWidth = 51;
             this.dgvEslesmisler.RowTemplate.Height = 24;
-            this.dgvEslesmisler.Size = new System.Drawing.Size(330, 181);
+            this.dgvEslesmisler.Size = new System.Drawing.Size(508, 181);
             this.dgvEslesmisler.TabIndex = 3;
             this.dgvEslesmisler.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // btnTamamla
             // 
-            this.btnTamamla.Location = new System.Drawing.Point(424, 388);
+            this.btnTamamla.Location = new System.Drawing.Point(601, 401);
             this.btnTamamla.Name = "btnTamamla";
             this.btnTamamla.Size = new System.Drawing.Size(157, 65);
             this.btnTamamla.TabIndex = 4;
@@ -93,7 +93,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 534);
+            this.BackgroundImage = global::AfetKoordinasyon.Sunum.Properties.Resources.sel;
+            this.ClientSize = new System.Drawing.Size(997, 534);
             this.Controls.Add(this.btnTamamla);
             this.Controls.Add(this.dgvEslesmisler);
             this.Controls.Add(this.btnEslestir);

@@ -39,7 +39,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(33, 51);
+            this.label1.Location = new System.Drawing.Point(33, 46);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(54, 16);
             this.label1.TabIndex = 0;
@@ -56,7 +56,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(36, 159);
+            this.label2.Location = new System.Drawing.Point(33, 159);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(47, 16);
             this.label2.TabIndex = 2;
@@ -64,17 +64,17 @@
             // 
             // txtParola
             // 
-            this.txtParola.Location = new System.Drawing.Point(36, 219);
+            this.txtParola.Location = new System.Drawing.Point(36, 205);
             this.txtParola.Name = "txtParola";
-            this.txtParola.Size = new System.Drawing.Size(100, 22);
+            this.txtParola.Size = new System.Drawing.Size(166, 22);
             this.txtParola.TabIndex = 3;
             this.txtParola.UseSystemPasswordChar = true;
             // 
             // btnGiris
             // 
-            this.btnGiris.Location = new System.Drawing.Point(393, 85);
+            this.btnGiris.Location = new System.Drawing.Point(367, 74);
             this.btnGiris.Name = "btnGiris";
-            this.btnGiris.Size = new System.Drawing.Size(75, 23);
+            this.btnGiris.Size = new System.Drawing.Size(192, 45);
             this.btnGiris.TabIndex = 4;
             this.btnGiris.Text = "Giriş Yap";
             this.btnGiris.UseVisualStyleBackColor = true;
@@ -82,9 +82,9 @@
             // 
             // btnKayit
             // 
-            this.btnKayit.Location = new System.Drawing.Point(393, 159);
+            this.btnKayit.Location = new System.Drawing.Point(367, 159);
             this.btnKayit.Name = "btnKayit";
-            this.btnKayit.Size = new System.Drawing.Size(75, 23);
+            this.btnKayit.Size = new System.Drawing.Size(192, 53);
             this.btnKayit.TabIndex = 5;
             this.btnKayit.Text = "Kayıt Ol";
             this.btnKayit.UseVisualStyleBackColor = true;
@@ -94,6 +94,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImage = global::AfetKoordinasyon.Sunum.Properties.Resources.images;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.btnKayit);
             this.Controls.Add(this.btnGiris);
@@ -103,6 +104,7 @@
             this.Controls.Add(this.label1);
             this.Name = "GirisForm";
             this.Text = "GirisForm";
+            this.Load += new System.EventHandler(this.GirisForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
