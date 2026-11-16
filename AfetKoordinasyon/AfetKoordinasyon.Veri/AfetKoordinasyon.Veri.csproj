@@ -76,6 +76,10 @@
     <Compile Include="Migrations\202611161151342_KonumKoordinatEklendi.Designer.cs">
       <DependentUpon>202611161151342_KonumKoordinatEklendi.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202611161237040_IhtiyacAciliyetEklendi.cs" />
+    <Compile Include="Migrations\202611161237040_IhtiyacAciliyetEklendi.Designer.cs">
+      <DependentUpon>202611161237040_IhtiyacAciliyetEklendi.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Varliklar\Durum.cs" />
@@ -108,6 +112,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202611161151342_KonumKoordinatEklendi.resx">
       <DependentUpon>202611161151342_KonumKoordinatEklendi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202611161237040_IhtiyacAciliyetEklendi.resx">
+      <DependentUpon>202611161237040_IhtiyacAciliyetEklendi.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

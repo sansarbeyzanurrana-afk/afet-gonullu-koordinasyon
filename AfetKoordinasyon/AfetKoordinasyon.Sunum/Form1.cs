@@ -11,6 +11,10 @@ namespace AfetKoordinasyon.Sunum
         private readonly IhtiyacServisi _ihtiyacServisi = new IhtiyacServisi();
         private readonly KonumServisi _konumServisi = new KonumServisi();
         private readonly KategoriServisi _kategoriServisi = new KategoriServisi();
+        private readonly IhtiyacOnceliklendirmeServisi _onceliklendirmeServisi = new IhtiyacOnceliklendirmeServisi();
+
+        // Son alınan AI önerisi (açıklama değişirse geçersiz olur)
+        private OncelikSonucu _sonOneri;
 
 
         public Form1()
@@ -45,6 +49,7 @@ namespace AfetKoordinasyon.Sunum
                 .Select(i => new
                 {
                     No = i.IhtiyacId,
+                    Aciliyet = i.AciliyetSkoru.HasValue ? i.AciliyetSkoru + "/5" : "-",
                     i.Tur,
                     i.Aciklama,
                     i.Miktar,
@@ -66,7 +71,9 @@ namespace AfetKoordinasyon.Sunum
                     Aciklama = txtAciklama.Text.Trim(),
                     Miktar = (int)nudMiktar.Value,
                     KonumId = (int)cmbKonum.SelectedValue,
-                    KategoriId = (int)cmbKategori.SelectedValue
+                    KategoriId = (int)cmbKategori.SelectedValue,
+                    AciliyetSkoru = _sonOneri?.Aciliyet,
+                    AiGerekce = _sonOneri == null ? null : (_sonOneri.Kaynak + ": " + _sonOneri.Gerekce)
                 });
 
                 MessageBox.Show("İhtiyaç kaydedildi.", "Bilgi",
@@ -74,6 +81,8 @@ namespace AfetKoordinasyon.Sunum
                 txtTur.Clear();
                 txtAciklama.Clear();
                 nudMiktar.Value = 1;
+                _sonOneri = null;
+                lblAiSonuc.Text = "Açıklamayı yazıp \"AI ile Öner\"e basın.";
                 ListeyiYenile();
             }
             catch (Exception ex)
@@ -99,7 +108,9 @@ namespace AfetKoordinasyon.Sunum
                     Aciklama = txtAciklama.Text.Trim(),
                     Miktar = (int)nudMiktar.Value,
                     KonumId = (int)cmbKonum.SelectedValue,
-                    KategoriId = (int)cmbKategori.SelectedValue
+                    KategoriId = (int)cmbKategori.SelectedValue,
+                    AciliyetSkoru = _sonOneri?.Aciliyet,
+                    AiGerekce = _sonOneri == null ? null : (_sonOneri.Kaynak + ": " + _sonOneri.Gerekce)
                 });
                 MessageBox.Show("İhtiyaç güncellendi.", "Bilgi",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -157,7 +168,12 @@ namespace AfetKoordinasyon.Sunum
 
         private void txtAciklama_TextChanged(object sender, EventArgs e)
         {
-
+            // Metin değişti: eski öneri artık bu metne ait değil
+            if (_sonOneri != null)
+            {
+                _sonOneri = null;
+                lblAiSonuc.Text = "Açıklama değişti; yeni öneri için \"AI ile Öner\"e basın.";
+            }
         }
 
        
@@ -170,6 +186,44 @@ namespace AfetKoordinasyon.Sunum
         {
             using (var f = new HaritaForm())
                 f.ShowDialog();
+        }
+
+        // Açıklamayı yapay zekâya gönderir; kategori ve aciliyet ÖNERİSİ alır.
+        // Öneri otomatik kaydedilmez: kullanıcı görür, gerekirse kategoriyi değiştirir, sonra Ekle'ye basar.
+        private async void btnAiOner_Click(object sender, EventArgs e)
+        {
+            btnAiOner.Enabled = false;
+            lblAiSonuc.Text = "Yapay zekâ değerlendiriyor...";
+            try
+            {
+                var oneri = await _onceliklendirmeServisi.DegerlendirAsync(txtAciklama.Text);
+                _sonOneri = oneri;
+
+                cmbKategori.SelectedValue = oneri.KategoriId;
+                if (string.IsNullOrWhiteSpace(txtTur.Text))
+                    txtTur.Text = oneri.KategoriAd;
+
+                lblAiSonuc.Text = "ÖNERİ (" + oneri.Kaynak + ") - lütfen kontrol edin:\n"
+                                + "Kategori: " + oneri.KategoriAd + "  |  Aciliyet: " + oneri.Aciliyet + "/5\n"
+                                + oneri.Gerekce;
+
+                if (oneri.Uyari != null)
+                    MessageBox.Show(oneri.Uyari, "Yapay zekâ kullanılamadı",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (ArgumentException ex)
+            {
+                lblAiSonuc.Text = ex.Message;
+            }
+            catch (Exception ex)
+            {
+                lblAiSonuc.Text = "Öneri alınamadı.";
+                MessageBox.Show(ex.Message, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                btnAiOner.Enabled = true;
+            }
         }
     }
     }

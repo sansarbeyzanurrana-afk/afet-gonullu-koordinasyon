@@ -45,6 +45,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.btnEslestirme = new System.Windows.Forms.Button();
             this.btnHarita = new System.Windows.Forms.Button();
+            this.btnAiOner = new System.Windows.Forms.Button();
+            this.lblAiSonuc = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nudMiktar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvIhtiyaclar)).BeginInit();
             this.SuspendLayout();
@@ -231,6 +233,29 @@
             this.btnHarita.UseVisualStyleBackColor = false;
             this.btnHarita.Click += new System.EventHandler(this.btnHarita_Click);
             // 
+            // btnAiOner
+            // 
+            this.btnAiOner.BackColor = System.Drawing.Color.LightSkyBlue;
+            this.btnAiOner.Font = new System.Drawing.Font("Microsoft YaHei", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnAiOner.Location = new System.Drawing.Point(310, 52);
+            this.btnAiOner.Name = "btnAiOner";
+            this.btnAiOner.Size = new System.Drawing.Size(100, 30);
+            this.btnAiOner.TabIndex = 17;
+            this.btnAiOner.Text = "AI ile Öner";
+            this.btnAiOner.UseVisualStyleBackColor = false;
+            this.btnAiOner.Click += new System.EventHandler(this.btnAiOner_Click);
+            // 
+            // lblAiSonuc
+            // 
+            this.lblAiSonuc.BackColor = System.Drawing.Color.LemonChiffon;
+            this.lblAiSonuc.Font = new System.Drawing.Font("Segoe UI", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblAiSonuc.Location = new System.Drawing.Point(500, 244);
+            this.lblAiSonuc.Name = "lblAiSonuc";
+            this.lblAiSonuc.Size = new System.Drawing.Size(422, 50);
+            this.lblAiSonuc.TabIndex = 18;
+            this.lblAiSonuc.Text = "Açıklamayı yazıp \"AI ile Öner\"e basın.";
+            this.lblAiSonuc.Visible = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -238,6 +263,8 @@
             this.BackColor = System.Drawing.SystemColors.Info;
             this.BackgroundImage = global::AfetKoordinasyon.Sunum.Properties.Resources.deprem;
             this.ClientSize = new System.Drawing.Size(986, 553);
+            this.Controls.Add(this.lblAiSonuc);
+            this.Controls.Add(this.btnAiOner);
             this.Controls.Add(this.btnHarita);
             this.Controls.Add(this.btnEslestirme);
             this.Controls.Add(this.label5);
@@ -283,6 +310,8 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnEslestirme;
         private System.Windows.Forms.Button btnHarita;
+        private System.Windows.Forms.Button btnAiOner;
+        private System.Windows.Forms.Label lblAiSonuc;
     }
 }
 

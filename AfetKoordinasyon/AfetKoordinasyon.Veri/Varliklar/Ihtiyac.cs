@@ -12,6 +12,12 @@ namespace AfetKoordinasyon.Veri.Varliklar
         public int Miktar { get; set; }
         public DateTime Tarih { get; set; }
 
+        // Yapay zekâ bileşeni (Hafta 10)
+        // Aciliyet: 1 = düşük ... 5 = hayati. Henüz değerlendirilmediyse boş (null).
+        [Range(1, 5)] public int? AciliyetSkoru { get; set; }
+        // AI'ın (ya da yedek kuralların) bu kararı neden verdiği; şeffaflık için saklanır
+        [StringLength(300)] public string AiGerekce { get; set; }
+
         public int KonumId { get; set; }
         public virtual Konum Konum { get; set; }
         public int DurumId { get; set; }

@@ -17,7 +17,9 @@ namespace AfetKoordinasyon.Is
                          .Include(i => i.Konum)
                          .Include(i => i.Kategori)
                          .Include(i => i.Durum)
-                         .OrderByDescending(i => i.Tarih)
+                         // ÖNCELİK SIRALAMASI: önce en acil, aynı aciliyette en yeni
+                         .OrderByDescending(i => i.AciliyetSkoru ?? 0)
+                         .ThenByDescending(i => i.Tarih)
                          .ToList();
             }
         }
@@ -43,6 +45,8 @@ namespace AfetKoordinasyon.Is
                 throw new ArgumentException("Açıklama en fazla 500 karakter olabilir.");
             if (ihtiyac.Miktar <= 0)
                 throw new ArgumentException("Miktar 0'dan büyük olmalı.");
+            if (ihtiyac.AciliyetSkoru.HasValue && (ihtiyac.AciliyetSkoru < 1 || ihtiyac.AciliyetSkoru > 5))
+                throw new ArgumentException("Aciliyet skoru 1 ile 5 arasında olmalı.");
 
             using (var db = new AfetDbContext())
             {
@@ -81,6 +85,11 @@ namespace AfetKoordinasyon.Is
                 mevcut.Miktar = ihtiyac.Miktar;
                 mevcut.KonumId = ihtiyac.KonumId;
                 mevcut.KategoriId = ihtiyac.KategoriId;
+                if (ihtiyac.AciliyetSkoru.HasValue)   // yeni bir AI önerisi alındıysa güncelle
+                {
+                    mevcut.AciliyetSkoru = ihtiyac.AciliyetSkoru;
+                    mevcut.AiGerekce = ihtiyac.AiGerekce;
+                }
                 db.SaveChanges();
             }
         }
