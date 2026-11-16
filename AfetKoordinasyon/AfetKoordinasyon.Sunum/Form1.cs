@@ -165,5 +165,11 @@ namespace AfetKoordinasyon.Sunum
         {
             new EslestirmeForm().ShowDialog();
         }
+
+        private void btnHarita_Click(object sender, EventArgs e)
+        {
+            using (var f = new HaritaForm())
+                f.ShowDialog();
+        }
     }
     }

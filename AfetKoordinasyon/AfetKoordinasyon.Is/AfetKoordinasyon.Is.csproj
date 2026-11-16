@@ -64,13 +64,16 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EslesmeServisi.cs" />
     <Compile Include="GonulluServisi.cs" />
+    <Compile Include="HaritaServisi.cs" />
     <Compile Include="IhtiyacServisi.cs" />
     <Compile Include="KategoriServisi.cs" />
+    <Compile Include="KoordinatServisi.cs" />
     <Compile Include="KonumServisi.cs" />
     <Compile Include="KullaniciServisi.cs" />
     <Compile Include="Oturum.cs" />

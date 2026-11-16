@@ -15,21 +15,29 @@ namespace AfetKoordinasyon.Sunum
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            while (true)
+            Application.ThreadException += (s, e) =>
+                MessageBox.Show(e.Exception.ToString(), "Hata");
+            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+                MessageBox.Show(e.ExceptionObject.ToString(), "Hata");
+
+            try
             {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+
+                // Önce giriş formu açılır; giriş başarılı olmazsa program kapanır
                 using (var giris = new GirisForm())
                 {
                     if (giris.ShowDialog() != DialogResult.OK)
-                        return; // giriş ekranı kapatıldı → uygulama kapanır
+                        return;
                 }
 
+                // Giriş başarılıysa ana ekran açılır
                 Application.Run(new Form1());
-
-                if (Oturum.Aktif)
-                    return; // Form1 X ile kapatıldı → uygulama kapanır
-                            // Çıkış yapıldıysa döngü başa döner, giriş ekranı tekrar açılır
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "Hata");
             }
         }
     }

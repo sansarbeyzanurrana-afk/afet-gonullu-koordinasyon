@@ -39,32 +39,38 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(33, 46);
+            this.label1.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.label1.Font = new System.Drawing.Font("Microsoft YaHei", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label1.Location = new System.Drawing.Point(33, 35);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(54, 16);
+            this.label1.Size = new System.Drawing.Size(74, 24);
             this.label1.TabIndex = 0;
             this.label1.Text = "E-posta";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // txtEmail
             // 
-            this.txtEmail.Location = new System.Drawing.Point(36, 85);
+            this.txtEmail.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.txtEmail.Location = new System.Drawing.Point(36, 86);
             this.txtEmail.Name = "txtEmail";
-            this.txtEmail.Size = new System.Drawing.Size(100, 22);
+            this.txtEmail.Size = new System.Drawing.Size(106, 22);
             this.txtEmail.TabIndex = 1;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(33, 159);
+            this.label2.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.label2.Font = new System.Drawing.Font("Microsoft YaHei", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.label2.Location = new System.Drawing.Point(32, 146);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(47, 16);
+            this.label2.Size = new System.Drawing.Size(64, 24);
             this.label2.TabIndex = 2;
             this.label2.Text = "Parola";
             // 
             // txtParola
             // 
-            this.txtParola.Location = new System.Drawing.Point(36, 205);
+            this.txtParola.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.txtParola.Location = new System.Drawing.Point(37, 190);
             this.txtParola.Name = "txtParola";
             this.txtParola.Size = new System.Drawing.Size(166, 22);
             this.txtParola.TabIndex = 3;
@@ -72,22 +78,26 @@
             // 
             // btnGiris
             // 
+            this.btnGiris.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.btnGiris.Font = new System.Drawing.Font("Microsoft YaHei", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.btnGiris.Location = new System.Drawing.Point(367, 74);
             this.btnGiris.Name = "btnGiris";
             this.btnGiris.Size = new System.Drawing.Size(192, 45);
             this.btnGiris.TabIndex = 4;
             this.btnGiris.Text = "Giriş Yap";
-            this.btnGiris.UseVisualStyleBackColor = true;
+            this.btnGiris.UseVisualStyleBackColor = false;
             this.btnGiris.Click += new System.EventHandler(this.btnGiris_Click);
             // 
             // btnKayit
             // 
+            this.btnKayit.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.btnKayit.Font = new System.Drawing.Font("Microsoft YaHei", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.btnKayit.Location = new System.Drawing.Point(367, 159);
             this.btnKayit.Name = "btnKayit";
             this.btnKayit.Size = new System.Drawing.Size(192, 53);
             this.btnKayit.TabIndex = 5;
             this.btnKayit.Text = "Kayıt Ol";
-            this.btnKayit.UseVisualStyleBackColor = true;
+            this.btnKayit.UseVisualStyleBackColor = false;
             this.btnKayit.Click += new System.EventHandler(this.btnKayit_Click);
             // 
             // GirisForm
@@ -95,7 +105,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::AfetKoordinasyon.Sunum.Properties.Resources.images;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(1083, 450);
             this.Controls.Add(this.btnKayit);
             this.Controls.Add(this.btnGiris);
             this.Controls.Add(this.txtParola);

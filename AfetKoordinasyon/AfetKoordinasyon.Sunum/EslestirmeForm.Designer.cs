@@ -60,12 +60,13 @@
             // 
             // btnEslestir
             // 
+            this.btnEslestir.BackColor = System.Drawing.SystemColors.Info;
             this.btnEslestir.Location = new System.Drawing.Point(363, 229);
             this.btnEslestir.Name = "btnEslestir";
             this.btnEslestir.Size = new System.Drawing.Size(264, 86);
             this.btnEslestir.TabIndex = 2;
             this.btnEslestir.Text = "Eşleştir";
-            this.btnEslestir.UseVisualStyleBackColor = true;
+            this.btnEslestir.UseVisualStyleBackColor = false;
             this.btnEslestir.Click += new System.EventHandler(this.btnEslestir_Click);
             // 
             // dgvEslesmisler
@@ -81,12 +82,13 @@
             // 
             // btnTamamla
             // 
+            this.btnTamamla.BackColor = System.Drawing.SystemColors.Info;
             this.btnTamamla.Location = new System.Drawing.Point(601, 401);
             this.btnTamamla.Name = "btnTamamla";
             this.btnTamamla.Size = new System.Drawing.Size(157, 65);
             this.btnTamamla.TabIndex = 4;
             this.btnTamamla.Text = "Tamamla";
-            this.btnTamamla.UseVisualStyleBackColor = true;
+            this.btnTamamla.UseVisualStyleBackColor = false;
             this.btnTamamla.Click += new System.EventHandler(this.btnTamamla_Click);
             // 
             // EslestirmeForm
@@ -94,7 +96,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::AfetKoordinasyon.Sunum.Properties.Resources.sel;
-            this.ClientSize = new System.Drawing.Size(997, 534);
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(1215, 583);
             this.Controls.Add(this.btnTamamla);
             this.Controls.Add(this.dgvEslesmisler);
             this.Controls.Add(this.btnEslestir);
