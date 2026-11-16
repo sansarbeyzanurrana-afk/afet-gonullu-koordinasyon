@@ -27,5 +27,9 @@ namespace AfetKoordinasyon.Veri.Varliklar
         public int? KullaniciId { get; set; }
         public virtual Kullanici Kullanici { get; set; }
         public virtual ICollection<Eslesme> Eslesmeler { get; set; }
+        public virtual ICollection<DurumGecmisi> DurumGecmisleri { get; set; }
+
+        // Eşzamanlılık kontrolü: iki kişi aynı kaydı aynı anda değiştirirse ikincisi hata alır
+        [Timestamp] public byte[] SatirSurumu { get; set; }
     }
 }

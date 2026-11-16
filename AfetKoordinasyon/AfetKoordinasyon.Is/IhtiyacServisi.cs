@@ -59,6 +59,16 @@ namespace AfetKoordinasyon.Is
                 ihtiyac.Tarih = DateTime.Now;
                 ihtiyac.KullaniciId = Oturum.AktifKullanici.Id;
                 db.Ihtiyaclar.Add(ihtiyac);
+                // Hafta 11: ihtiyacın ilk durumu geçmişe yazılır
+                db.DurumGecmisleri.Add(new DurumGecmisi
+                {
+                    Ihtiyac = ihtiyac,
+                    EskiDurum = null,
+                    YeniDurum = "Bekliyor",
+                    Tarih = ihtiyac.Tarih,
+                    KullaniciId = Oturum.AktifKullanici.Id,
+                    Not = "İhtiyaç bildirildi."
+                });
                 db.SaveChanges();
             }
         }
@@ -106,6 +116,8 @@ namespace AfetKoordinasyon.Is
                 if (ihtiyac == null)
                     throw new ArgumentException("İhtiyaç bulunamadı.");
 
+                // Geçmiş kayıtları ihtiyaca bağlı olduğu için önce onlar silinir
+                db.DurumGecmisleri.RemoveRange(db.DurumGecmisleri.Where(g => g.IhtiyacId == ihtiyacId));
                 db.Ihtiyaclar.Remove(ihtiyac);
                 db.SaveChanges();
             }

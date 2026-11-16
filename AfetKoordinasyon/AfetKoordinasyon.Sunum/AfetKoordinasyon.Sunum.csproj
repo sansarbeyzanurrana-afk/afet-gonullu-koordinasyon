@@ -80,6 +80,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DurumTakipForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="EslestirmeForm.cs">
       <SubType>Form</SubType>
     </Compile>

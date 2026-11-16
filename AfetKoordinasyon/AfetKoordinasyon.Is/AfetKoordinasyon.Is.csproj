@@ -69,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DurumServisi.cs" />
     <Compile Include="EslesmeServisi.cs" />
     <Compile Include="GonulluServisi.cs" />
     <Compile Include="HaritaServisi.cs" />

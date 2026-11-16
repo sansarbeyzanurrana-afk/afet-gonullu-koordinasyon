@@ -18,7 +18,9 @@
             context.Durumlar.AddOrUpdate(d => d.Ad,
                 new Durum { Ad = "Bekliyor" },
                 new Durum { Ad = "Eşleşti" },
-                new Durum { Ad = "Tamamlandı" });
+                new Durum { Ad = "Tamamlandı" },
+                new Durum { Ad = "Yolda" },
+                new Durum { Ad = "İptal" });
 
             context.Kategoriler.AddOrUpdate(k => k.Ad,
                new Kategori { Ad = "Gıda" },
@@ -47,21 +49,30 @@
             var bekliyor = context.Durumlar.Single(d => d.Ad == "Bekliyor");
             var eslesti = context.Durumlar.Single(d => d.Ad == "Eşleşti");
 
-            context.Gonulluler.AddOrUpdate(g => g.Telefon,
-                new Gonullu { AdSoyad = "Gönüllü Bir", Telefon = "05550000001", Beceri = "İlk yardım", KonumId = merkez.KonumId },
-                new Gonullu { AdSoyad = "Gönüllü İki", Telefon = "05550000002", Beceri = "Lojistik", KonumId = genc.KonumId });
+            // Örnek kayıtlar SADECE YOKSA eklenir.
+            // (Önceden AddOrUpdate her Update-Database'te bu kayıtların durumunu sıfırlıyordu;
+            //  bu, durum makinesini ve "bir gönüllünün tek aktif işi" kuralını bozuyordu.)
+            if (!context.Gonulluler.Any(g => g.Telefon == "05550000001"))
+                context.Gonulluler.Add(new Gonullu { AdSoyad = "Gönüllü Bir", Telefon = "05550000001", Beceri = "İlk yardım", KonumId = merkez.KonumId });
+            if (!context.Gonulluler.Any(g => g.Telefon == "05550000002"))
+                context.Gonulluler.Add(new Gonullu { AdSoyad = "Gönüllü İki", Telefon = "05550000002", Beceri = "Lojistik", KonumId = genc.KonumId });
 
-            context.Ihtiyaclar.AddOrUpdate(i => i.Aciklama,
-                new Ihtiyac { Tur = "Gıda", Aciklama = "Kuru gıda kolisi", Miktar = 20, Tarih = new DateTime(2026, 10, 1), KonumId = merkez.KonumId, DurumId = eslesti.DurumId ,KategoriId = gidaKat.Id },
-                new Ihtiyac { Tur = "Barınma", Aciklama = "Çadır", Miktar = 5, Tarih = new DateTime(2026, 10, 2), KonumId = genc.KonumId, DurumId = bekliyor.DurumId , KategoriId = barinmaKat.Id });
+            if (!context.Ihtiyaclar.Any(i => i.Aciklama == "Kuru gıda kolisi"))
+                context.Ihtiyaclar.Add(new Ihtiyac { Tur = "Gıda", Aciklama = "Kuru gıda kolisi", Miktar = 20, Tarih = new DateTime(2026, 10, 1), KonumId = merkez.KonumId, DurumId = eslesti.DurumId, KategoriId = gidaKat.Id });
+            if (!context.Ihtiyaclar.Any(i => i.Aciklama == "Çadır"))
+                context.Ihtiyaclar.Add(new Ihtiyac { Tur = "Barınma", Aciklama = "Çadır", Miktar = 5, Tarih = new DateTime(2026, 10, 2), KonumId = genc.KonumId, DurumId = bekliyor.DurumId, KategoriId = barinmaKat.Id });
             context.SaveChanges();
 
             var g1 = context.Gonulluler.Single(g => g.Telefon == "05550000001");
-            var gida = context.Ihtiyaclar.Single(i => i.Aciklama == "Kuru gıda kolisi");
+            var gida = context.Ihtiyaclar.First(i => i.Aciklama == "Kuru gıda kolisi");
 
-            context.Eslesmeler.AddOrUpdate(e => new { e.IhtiyacId, e.GonulluId },
-                new Eslesme { IhtiyacId = gida.IhtiyacId, GonulluId = g1.GonulluId, Tarih = new DateTime(2026, 10, 3) });
-            context.SaveChanges();
+            // Örnek eşleşme: o ihtiyacın hiç eşleşmesi yoksa ve gönüllü boştaysa eklenir
+            if (!context.Eslesmeler.Any(e => e.IhtiyacId == gida.IhtiyacId) &&
+                !context.Eslesmeler.Any(e => e.GonulluId == g1.GonulluId && e.Aktif))
+            {
+                context.Eslesmeler.Add(new Eslesme { IhtiyacId = gida.IhtiyacId, GonulluId = g1.GonulluId, Tarih = new DateTime(2026, 10, 3), Aktif = true });
+                context.SaveChanges();
+            }
         }
     }
 }

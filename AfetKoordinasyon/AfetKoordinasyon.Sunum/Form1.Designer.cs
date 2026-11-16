@@ -46,6 +46,7 @@
             this.btnEslestirme = new System.Windows.Forms.Button();
             this.btnHarita = new System.Windows.Forms.Button();
             this.btnAiOner = new System.Windows.Forms.Button();
+            this.btnDurumTakip = new System.Windows.Forms.Button();
             this.lblAiSonuc = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nudMiktar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvIhtiyaclar)).BeginInit();
@@ -233,6 +234,18 @@
             this.btnHarita.UseVisualStyleBackColor = false;
             this.btnHarita.Click += new System.EventHandler(this.btnHarita_Click);
             // 
+            // btnDurumTakip
+            // 
+            this.btnDurumTakip.BackColor = System.Drawing.Color.LemonChiffon;
+            this.btnDurumTakip.Font = new System.Drawing.Font("Microsoft YaHei", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnDurumTakip.Location = new System.Drawing.Point(613, 72);
+            this.btnDurumTakip.Name = "btnDurumTakip";
+            this.btnDurumTakip.Size = new System.Drawing.Size(264, 44);
+            this.btnDurumTakip.TabIndex = 19;
+            this.btnDurumTakip.Text = "Durum Takibi";
+            this.btnDurumTakip.UseVisualStyleBackColor = false;
+            this.btnDurumTakip.Click += new System.EventHandler(this.btnDurumTakip_Click);
+            // 
             // btnAiOner
             // 
             this.btnAiOner.BackColor = System.Drawing.Color.LightSkyBlue;
@@ -265,6 +278,7 @@
             this.ClientSize = new System.Drawing.Size(986, 553);
             this.Controls.Add(this.lblAiSonuc);
             this.Controls.Add(this.btnAiOner);
+            this.Controls.Add(this.btnDurumTakip);
             this.Controls.Add(this.btnHarita);
             this.Controls.Add(this.btnEslestirme);
             this.Controls.Add(this.label5);
@@ -310,6 +324,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnEslestirme;
         private System.Windows.Forms.Button btnHarita;
+        private System.Windows.Forms.Button btnDurumTakip;
         private System.Windows.Forms.Button btnAiOner;
         private System.Windows.Forms.Label lblAiSonuc;
     }

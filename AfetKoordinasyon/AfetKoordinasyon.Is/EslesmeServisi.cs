@@ -21,37 +21,11 @@ namespace AfetKoordinasyon.Is
             }
         }
 
-        // Bekleyen bir ihtiyacı gönüllüye atar, durumunu "Eşleşti" yapar
+        // Bekleyen bir ihtiyacı gönüllüye atar, durumunu "Eşleşti" yapar.
+        // Hafta 11: kurallar ve geçmiş kaydı DurumServisi'nde (tek yerde) tutuluyor.
         public void Eslestir(int ihtiyacId, int gonulluId)
         {
-            Oturum.RolGerekli("Koordinator");
-
-            using (var db = new AfetDbContext())
-            {
-                var ihtiyac = db.Ihtiyaclar.Include(i => i.Durum)
-                                .SingleOrDefault(i => i.IhtiyacId == ihtiyacId);
-                if (ihtiyac == null)
-                    throw new InvalidOperationException("İhtiyaç bulunamadı.");
-                if (ihtiyac.Durum.Ad != "Bekliyor")
-                    throw new InvalidOperationException("Bu ihtiyaç zaten eşleştirilmiş.");
-
-                var gonullu = db.Gonulluler.SingleOrDefault(g => g.GonulluId == gonulluId);
-                if (gonullu == null)
-                    throw new InvalidOperationException("Gönüllü bulunamadı.");
-                if (!gonullu.MusaitMi)
-                    throw new InvalidOperationException("Bu gönüllü şu an müsait değil.");
-
-                db.Eslesmeler.Add(new Eslesme
-                {
-                    IhtiyacId = ihtiyacId,
-                    GonulluId = gonulluId,
-                    Tarih = DateTime.Now
-                });
-
-                ihtiyac.DurumId = db.Durumlar.Single(d => d.Ad == "Eşleşti").DurumId;
-                gonullu.MusaitMi = false;
-                db.SaveChanges();
-            }
+            new DurumServisi().Ata(ihtiyacId, gonulluId);
         }
         // Durumu "Bekliyor" olan ihtiyaçları listeler
         public List<Ihtiyac> BekleyenIhtiyaclariGetir()
@@ -74,7 +48,7 @@ namespace AfetKoordinasyon.Is
                 db.Configuration.LazyLoadingEnabled = false;
 
                 return db.Ihtiyaclar
-                         .Where(i => i.Durum.Ad == "Eşleşti")
+                         .Where(i => i.Durum.Ad == "Eşleşti" || i.Durum.Ad == "Yolda")
                          .OrderBy(i => i.Tarih)
                          .ToList();
             }
@@ -89,32 +63,16 @@ namespace AfetKoordinasyon.Is
                     throw new InvalidOperationException("İhtiyaç bulunamadı.");
 
                 return db.Gonulluler
-                         .Where(g => g.MusaitMi && g.KonumId == ihtiyac.KonumId)
+                         .Where(g => g.MusaitMi && g.KonumId == ihtiyac.KonumId
+                                  && !g.Eslesmeler.Any(e => e.Aktif))
                          .OrderBy(g => g.AdSoyad)
                          .ToList();
             }
         }
-        // Eşleşmiş ihtiyacı "Tamamlandı" yapar
+        // Eşleşmiş (ya da yoldaki) ihtiyacı "Tamamlandı" yapar, gönüllüyü tekrar müsait yapar
         public void Tamamla(int ihtiyacId)
         {
-            Oturum.RolGerekli("Koordinator");
-
-            using (var db = new AfetDbContext())
-            {
-                var ihtiyac = db.Ihtiyaclar.Include(i => i.Durum)
-                                .SingleOrDefault(i => i.IhtiyacId == ihtiyacId);
-                if (ihtiyac == null)
-                    throw new InvalidOperationException("İhtiyaç bulunamadı.");
-                if (ihtiyac.Durum.Ad != "Eşleşti")
-                    throw new InvalidOperationException("Sadece eşleşmiş ihtiyaçlar tamamlanabilir.");
-
-                ihtiyac.DurumId = db.Durumlar.Single(d => d.Ad == "Tamamlandı").DurumId;
-                var eslesme = db.Eslesmeler.Include(e => e.Gonullu)
-                           .FirstOrDefault(e => e.IhtiyacId == ihtiyacId);
-                if (eslesme != null)
-                    eslesme.Gonullu.MusaitMi = true;
-                db.SaveChanges();
-            }
+            new DurumServisi().Tamamla(ihtiyacId);
         }
     }
 }

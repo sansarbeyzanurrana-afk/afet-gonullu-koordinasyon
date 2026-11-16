@@ -180,6 +180,14 @@ namespace AfetKoordinasyon.Sunum
         private void btnEslestirme_Click(object sender, EventArgs e)
         {
             new EslestirmeForm().ShowDialog();
+            ListeyiYenile();
+        }
+
+        private void btnDurumTakip_Click(object sender, EventArgs e)
+        {
+            using (var f = new DurumTakipForm())
+                f.ShowDialog();
+            ListeyiYenile();   // durumlar değişmiş olabilir
         }
 
         private void btnHarita_Click(object sender, EventArgs e)
