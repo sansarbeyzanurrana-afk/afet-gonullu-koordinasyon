@@ -52,11 +52,14 @@ namespace AfetKoordinasyon.Is
             }
         }
 
+        // Önce dakikaya yuvarlanır, sonra birim seçilir.
+        // (Eski hali 59 dk 57 sn için "60 dakikadır" yazıyordu; Hafta 13 birim testiyle bulundu.)
         public static string SureMetni(double saat)
         {
-            if (saat < 1) return (int)Math.Round(saat * 60) + " dakikadır";
-            if (saat < 48) return (int)Math.Floor(saat) + " saattir";
-            return (int)Math.Floor(saat / 24) + " gündür";
+            int dakika = (int)Math.Round(saat * 60);
+            if (dakika < 60) return dakika + " dakikadır";
+            if (dakika < 48 * 60) return (dakika / 60) + " saattir";
+            return (dakika / (24 * 60)) + " gündür";
         }
     }
 }

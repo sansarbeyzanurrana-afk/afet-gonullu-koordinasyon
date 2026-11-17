@@ -224,7 +224,7 @@ namespace AfetKoordinasyon.Is
         // ------------------------------------------------------------------
         // ÇIKTI DOĞRULAMA: AI'ın cevabı körü körüne kullanılmaz
         // ------------------------------------------------------------------
-        private static OncelikSonucu Dogrula(string cevap, List<Kategori> kategoriler, out string hata)
+        internal static OncelikSonucu Dogrula(string cevap, List<Kategori> kategoriler, out string hata)
         {
             hata = null;
             if (string.IsNullOrWhiteSpace(cevap)) { hata = "boş cevap."; return null; }
@@ -284,7 +284,7 @@ namespace AfetKoordinasyon.Is
         private static readonly string[] HayatiKelimeler = { "yaralı", "kanama", "nefes", "bilinç", "enkaz", "insülin", "donuyor", "ölüm" };
         private static readonly string[] YuksekKelimeler = { "bebek", "hamile", "yaşlı", "engelli", "kronik", "soğuk", "susuz", "ilaç", "mama" };
 
-        private static OncelikSonucu KuralTabanliDegerlendir(string metin, List<Kategori> kategoriler)
+        internal static OncelikSonucu KuralTabanliDegerlendir(string metin, List<Kategori> kategoriler)
         {
             var kucuk = " " + metin.ToLower(tr) + " ";
 
@@ -323,7 +323,7 @@ namespace AfetKoordinasyon.Is
         {
             metin = Regex.Replace(metin, @"[\w.+-]+@[\w-]+\.[\w.]+", "[E-POSTA]");
             metin = Regex.Replace(metin, @"\b[1-9]\d{10}\b", "[TC]");
-            metin = Regex.Replace(metin, @"(\+?90[\s-]?)?0?5\d{2}[\s-]?\d{3}[\s-]?\d{2}[\s-]?\d{2}", "[TELEFON]");
+            metin = Regex.Replace(metin, @"(\+?90[\s-]?)?\(?0?5\d{2}\)?[\s-]?\d{3}[\s-]?\d{2}[\s-]?\d{2}", "[TELEFON]");
             return metin;
         }
 

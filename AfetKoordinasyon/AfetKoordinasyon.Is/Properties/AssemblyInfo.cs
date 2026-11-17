@@ -31,3 +31,6 @@ using System.Runtime.InteropServices;
 //
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+
+// Hafta 13: test projesi internal metotları test edebilsin
+[assembly: InternalsVisibleTo("AfetKoordinasyon.Testler")]
