@@ -16,6 +16,12 @@ namespace AfetKoordinasyon.Sunum
         // Son alınan AI önerisi (açıklama değişirse geçersiz olur)
         private OncelikSonucu _sonOneri;
 
+        // BİLDİRİM (Hafta 12): zamanlayıcı ile kritik bekleyen talepleri kontrol eder
+        private readonly BildirimServisi _bildirimServisi = new BildirimServisi();
+        private readonly System.Windows.Forms.Timer _bildirimZamanlayici = new System.Windows.Forms.Timer();
+        private readonly NotifyIcon _bildirimIkonu = new NotifyIcon();
+        private readonly System.Collections.Generic.HashSet<int> _bildirilenler = new System.Collections.Generic.HashSet<int>();
+
 
         public Form1()
         {
@@ -26,6 +32,10 @@ namespace AfetKoordinasyon.Sunum
             btnSil.Enabled = string.Equals(Oturum.AktifKullanici.Rol?.Trim(), "Koordinator", StringComparison.OrdinalIgnoreCase);
             Text = "İhtiyaç Yönetimi - " + Oturum.AktifKullanici.AdSoyad
                    + " (" + Oturum.AktifKullanici.Rol + ")";
+
+            // Bildirimler sadece koordinatöre: atama yapabilen tek kişi o
+            if (string.Equals(Oturum.AktifKullanici.Rol?.Trim(), "Koordinator", StringComparison.OrdinalIgnoreCase))
+                BildirimleriBaslat();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -181,6 +191,65 @@ namespace AfetKoordinasyon.Sunum
         {
             new EslestirmeForm().ShowDialog();
             ListeyiYenile();
+        }
+
+        // ------------------------------------------------------------------
+        // BİLDİRİM
+        // ------------------------------------------------------------------
+        private void BildirimleriBaslat()
+        {
+            _bildirimIkonu.Icon = System.Drawing.SystemIcons.Warning;
+            _bildirimIkonu.Text = "Afet Koordinasyon - bildirimler";
+            _bildirimIkonu.Visible = true;
+            _bildirimIkonu.BalloonTipClicked += (s, e) => btnDurumTakip_Click(s, e);   // tıklayınca Durum Takibi açılır
+            _bildirimIkonu.DoubleClick += (s, e) => btnDurumTakip_Click(s, e);
+
+            _bildirimZamanlayici.Interval = 5 * 60 * 1000;      // 5 dakikada bir kontrol
+            _bildirimZamanlayici.Tick += (s, e) => KritikleriKontrolEt();
+            _bildirimZamanlayici.Start();
+
+            Shown += (s, e) => KritikleriKontrolEt();            // açılışta da bir kez kontrol et
+
+            // Form kapanınca bildirim simgesi tepside asılı kalmasın
+            FormClosed += (s, e) =>
+            {
+                _bildirimZamanlayici.Stop();
+                _bildirimIkonu.Visible = false;
+                _bildirimIkonu.Dispose();
+            };
+        }
+
+        private void KritikleriKontrolEt()
+        {
+            System.Collections.Generic.List<KritikBildirim> kritikler;
+            try
+            {
+                kritikler = _bildirimServisi.UzunSuredirBekleyenKritikler();
+            }
+            catch (Exception)
+            {
+                return;   // bildirim kontrolü başarısız olursa programı rahatsız etme, sonraki turda tekrar dener
+            }
+
+            // Sadece DAHA ÖNCE bildirilmemiş talepler için bildirim gönder (aynı uyarıyı tekrar tekrar gösterme)
+            var yeniler = kritikler.Where(k => !_bildirilenler.Contains(k.IhtiyacId)).ToList();
+            // Artık kritik olmayanlar (atanmış/tamamlanmış) listeden çıkar; tekrar beklemeye düşerse yeniden bildirilir
+            _bildirilenler.IntersectWith(kritikler.Select(k => k.IhtiyacId));
+            if (yeniler.Count == 0) return;
+            foreach (var k in yeniler) _bildirilenler.Add(k.IhtiyacId);
+
+            string metin = yeniler.Count == 1
+                ? yeniler[0].Ozet + " " + BildirimServisi.SureMetni(yeniler[0].BeklemeSaati) + " gönüllü bekliyor."
+                : yeniler.Count + " kritik talep 1 saatten uzun süredir gönüllü bekliyor. En uzun: "
+                  + yeniler[0].Ozet + " (" + BildirimServisi.SureMetni(yeniler[0].BeklemeSaati) + ").";
+
+            _bildirimIkonu.ShowBalloonTip(10000, "Kritik ihtiyaç bekliyor", metin + " Açmak için tıklayın.", ToolTipIcon.Warning);
+        }
+
+        private void btnRapor_Click(object sender, EventArgs e)
+        {
+            using (var f = new RaporForm())
+                f.ShowDialog();
         }
 
         private void btnDurumTakip_Click(object sender, EventArgs e)

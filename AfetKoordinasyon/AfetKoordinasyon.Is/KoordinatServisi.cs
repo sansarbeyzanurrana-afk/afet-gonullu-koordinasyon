@@ -98,24 +98,52 @@ namespace AfetKoordinasyon.Is
             return sonuc;
         }
 
-        // Önce mahalle dahil tam adresle arar; bulunamazsa sadece ilçe + il ile tekrar dener.
+        // Arama sırası (en güvenilirden en zayıfa):
+        //  1) Yapılandırılmış arama: şehir ve il AYRI alanlarda (ilçe "Merkez" ise il merkezi aranır)
+        //  2) Serbest metin: "İlçe, İl, Türkiye"
+        //  3) Serbest metin: mahalle dahil tam adres
+        // Mahalle en sona alındı: örnek verideki uydurma mahalle adları servisi yanlış yerlere götürüyordu.
         private async Task<double[]> KonumIcinAraAsync(string anahtar, Konum konum)
         {
+            var sehir = string.Equals(konum.Ilce?.Trim(), "Merkez", StringComparison.OrdinalIgnoreCase)
+                ? konum.Il : konum.Ilce;
+
+            var sonuc = await AraAsync(anahtar,
+                "city=" + Uri.EscapeDataString(sehir) +
+                "&state=" + Uri.EscapeDataString(konum.Il) +
+                "&country=" + Uri.EscapeDataString("Türkiye")).ConfigureAwait(false);
+            if (sonuc != null) return sonuc;
+
+            sonuc = await AraAsync(anahtar, "q=" + Uri.EscapeDataString(sehir + ", " + konum.Il + ", Türkiye")).ConfigureAwait(false);
+            if (sonuc != null) return sonuc;
+
             if (!string.IsNullOrWhiteSpace(konum.Mahalle))
+                return await AraAsync(anahtar, "q=" + Uri.EscapeDataString(konum.Mahalle + ", " + konum.Ilce + ", " + konum.Il + ", Türkiye")).ConfigureAwait(false);
+            return null;
+        }
+
+        // Tüm konumların koordinatını silip yeniden alır (arama yöntemi değiştiğinde kullanılır)
+        public async Task<KoordinatSonucu> TumKoordinatlariYenidenAlAsync()
+        {
+            using (var db = new AfetDbContext())
             {
-                var tamAdres = $"{konum.Mahalle}, {konum.Ilce}, {konum.Il}, Türkiye";
-                var sonuc = await AraAsync(anahtar, tamAdres).ConfigureAwait(false);
-                if (sonuc != null) return sonuc;
+                foreach (var k in db.Konumlar.ToList())
+                {
+                    k.Enlem = null;
+                    k.Boylam = null;
+                }
+                db.SaveChanges();
             }
-            return await AraAsync(anahtar, $"{konum.Ilce}, {konum.Il}, Türkiye").ConfigureAwait(false);
+            return await EksikKoordinatlariTamamlaAsync().ConfigureAwait(false);
         }
 
         // Tek bir adres için API çağrısı. Bulunamazsa null döner; ciddi hatada HaritaApiHatasi fırlatır.
-        private async Task<double[]> AraAsync(string anahtar, string adres)
+        // sorgu: "q=..." (serbest metin) ya da "city=...&state=...&country=..." (yapılandırılmış)
+        private async Task<double[]> AraAsync(string anahtar, string sorgu)
         {
             var url = AramaAdresi
                     + "?key=" + Uri.EscapeDataString(anahtar)
-                    + "&q=" + Uri.EscapeDataString(adres)
+                    + "&" + sorgu
                     + "&format=json&limit=1&countrycodes=tr&accept-language=tr";
 
             for (int deneme = 1; deneme <= MaksDeneme; deneme++)
@@ -203,7 +231,8 @@ namespace AfetKoordinasyon.Is
                 !double.TryParse(ilk.Lon, NumberStyles.Float, CultureInfo.InvariantCulture, out boylam))
                 return null;
 
-            if (enlem < -90 || enlem > 90 || boylam < -180 || boylam > 180)
+            // Çıktı doğrulama: sonuç Türkiye sınırları içinde olmalı (yaklaşık kutu)
+            if (enlem < 35.8 || enlem > 42.2 || boylam < 25.6 || boylam > 44.9)
                 return null;
 
             return new[] { enlem, boylam };

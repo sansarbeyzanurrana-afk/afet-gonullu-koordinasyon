@@ -5,77 +5,73 @@ using AfetKoordinasyon.Veri;
 
 namespace AfetKoordinasyon.Is
 {
-    // Haritada gösterilecek bir işaret (aynı konumdaki kayıtlar tek işarette toplanır)
-    public class HaritaNoktasi
+    // Bir bölgenin (konumun) harita özeti: o konumdaki tüm kayıtlar tek satırda toplanır (kümeleme)
+    public class BolgeOzeti
     {
-        public double Enlem { get; set; }
-        public double Boylam { get; set; }
-        public string Baslik { get; set; }   // ör. "Merkez / Bingöl"
-        public int Adet { get; set; }        // bu konumdaki kayıt sayısı
-        public string Detay { get; set; }    // tıklayınca gösterilecek ayrıntı
+        public int KonumId { get; set; }
+        public string Baslik { get; set; }          // ör. "Genç / Bingöl"
+        public double? Enlem { get; set; }
+        public double? Boylam { get; set; }
+        public bool KoordinatVar { get { return Enlem.HasValue && Boylam.HasValue; } }
+
+        public int Bekleyen { get; set; }
+        public int KritikBekleyen { get; set; }      // Bekliyor ve aciliyet 4-5
+        public int Surecte { get; set; }             // Eşleşti + Yolda
+        public int Karsilanan { get; set; }          // Tamamlandı
+        public int GonulluToplam { get; set; }
+        public int GonulluMusait { get; set; }
+
+        public string AcikTalepDetayi { get; set; }  // tıklayınca gösterilecek liste
+        public string GonulluDetayi { get; set; }
     }
 
     public class HaritaServisi
     {
-        // Tamamlanmamış ihtiyaçları KONUMA GÖRE gruplar (kümeleme).
-        // Koordinatı henüz alınmamış konumlar haritada gösterilmez.
-        public List<HaritaNoktasi> IhtiyacNoktalari()
+        // Her konum için durum sayıları. İptal edilen talepler sayılmaz.
+        public List<BolgeOzeti> BolgeOzetleri()
         {
             using (var db = new AfetDbContext())
             {
+                var konumlar = db.Konumlar.ToList();
                 var ihtiyaclar = db.Ihtiyaclar
-                    .Include(i => i.Konum)
-                    .Include(i => i.Kategori)
                     .Include(i => i.Durum)
-                    .Where(i => i.Durum.Ad != "Tamamlandı"
-                             && i.Konum.Enlem != null && i.Konum.Boylam != null)
+                    .Include(i => i.Kategori)
+                    .Where(i => i.Durum.Ad != DurumAdlari.Iptal)
                     .ToList();
+                var gonulluler = db.Gonulluler.ToList();
 
-                return ihtiyaclar
-                    .GroupBy(i => i.KonumId)
-                    .Select(g =>
+                return konumlar.Select(k =>
+                {
+                    var buradaki = ihtiyaclar.Where(i => i.KonumId == k.KonumId).ToList();
+                    var acik = buradaki
+                        .Where(i => i.Durum.Ad != DurumAdlari.Tamamlandi)
+                        .OrderByDescending(i => i.AciliyetSkoru ?? 0)
+                        .ToList();
+                    var gonullu = gonulluler.Where(g => g.KonumId == k.KonumId).ToList();
+
+                    return new BolgeOzeti
                     {
-                        var konum = g.First().Konum;
-                        return new HaritaNoktasi
-                        {
-                            Enlem = konum.Enlem.Value,
-                            Boylam = konum.Boylam.Value,
-                            Baslik = konum.Ilce + " / " + konum.Il,
-                            Adet = g.Count(),
-                            Detay = string.Join("\n", g.Select(i =>
-                                "- " + i.Tur + " (" + i.Kategori.Ad + "), " + i.Miktar + " adet, " + i.Durum.Ad))
-                        };
-                    })
-                    .ToList();
-            }
-        }
-
-        // Gönüllüleri konuma göre gruplar
-        public List<HaritaNoktasi> GonulluNoktalari()
-        {
-            using (var db = new AfetDbContext())
-            {
-                var gonulluler = db.Gonulluler
-                    .Include(g => g.Konum)
-                    .Where(g => g.Konum.Enlem != null && g.Konum.Boylam != null)
-                    .ToList();
-
-                return gonulluler
-                    .GroupBy(g => g.KonumId)
-                    .Select(grup =>
-                    {
-                        var konum = grup.First().Konum;
-                        return new HaritaNoktasi
-                        {
-                            Enlem = konum.Enlem.Value,
-                            Boylam = konum.Boylam.Value,
-                            Baslik = konum.Ilce + " / " + konum.Il,
-                            Adet = grup.Count(),
-                            Detay = string.Join("\n", grup.Select(g =>
-                                "- " + g.AdSoyad + " (" + g.Beceri + "), " + (g.MusaitMi ? "müsait" : "meşgul")))
-                        };
-                    })
-                    .ToList();
+                        KonumId = k.KonumId,
+                        Baslik = k.Ilce + " / " + k.Il,
+                        Enlem = k.Enlem,
+                        Boylam = k.Boylam,
+                        Bekleyen = buradaki.Count(i => i.Durum.Ad == DurumAdlari.Bekliyor),
+                        KritikBekleyen = buradaki.Count(i => i.Durum.Ad == DurumAdlari.Bekliyor && i.AciliyetSkoru >= 4),
+                        Surecte = buradaki.Count(i => i.Durum.Ad == DurumAdlari.Eslesti || i.Durum.Ad == DurumAdlari.Yolda),
+                        Karsilanan = buradaki.Count(i => i.Durum.Ad == DurumAdlari.Tamamlandi),
+                        GonulluToplam = gonullu.Count,
+                        GonulluMusait = gonullu.Count(g => g.MusaitMi),
+                        AcikTalepDetayi = string.Join("\n", acik.Select(i =>
+                            "- #" + i.IhtiyacId + " " + i.Tur + " (" + (i.Kategori != null ? i.Kategori.Ad : "-") + "), "
+                            + i.Durum.Ad + ", aciliyet " + (i.AciliyetSkoru.HasValue ? i.AciliyetSkoru + "/5" : "-"))),
+                        GonulluDetayi = string.Join("\n", gonullu.Select(g =>
+                            "- " + g.AdSoyad + " (" + g.Beceri + "), " + (g.MusaitMi ? "müsait" : "görevde")))
+                    };
+                })
+                // Hiç kaydı olmayan konumları gösterme
+                .Where(b => b.Bekleyen + b.Surecte + b.Karsilanan + b.GonulluToplam > 0)
+                .OrderByDescending(b => b.KritikBekleyen).ThenByDescending(b => b.Bekleyen).ThenBy(b => b.Baslik)
+                .ToList();
             }
         }
 

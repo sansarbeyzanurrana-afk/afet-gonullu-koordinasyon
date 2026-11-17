@@ -47,6 +47,7 @@
             this.btnHarita = new System.Windows.Forms.Button();
             this.btnAiOner = new System.Windows.Forms.Button();
             this.btnDurumTakip = new System.Windows.Forms.Button();
+            this.btnRapor = new System.Windows.Forms.Button();
             this.lblAiSonuc = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.nudMiktar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvIhtiyaclar)).BeginInit();
@@ -246,6 +247,18 @@
             this.btnDurumTakip.UseVisualStyleBackColor = false;
             this.btnDurumTakip.Click += new System.EventHandler(this.btnDurumTakip_Click);
             // 
+            // btnRapor
+            // 
+            this.btnRapor.BackColor = System.Drawing.Color.LemonChiffon;
+            this.btnRapor.Font = new System.Drawing.Font("Microsoft YaHei", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.btnRapor.Location = new System.Drawing.Point(613, 12);
+            this.btnRapor.Name = "btnRapor";
+            this.btnRapor.Size = new System.Drawing.Size(264, 44);
+            this.btnRapor.TabIndex = 20;
+            this.btnRapor.Text = "Durum Raporu";
+            this.btnRapor.UseVisualStyleBackColor = false;
+            this.btnRapor.Click += new System.EventHandler(this.btnRapor_Click);
+            // 
             // btnAiOner
             // 
             this.btnAiOner.BackColor = System.Drawing.Color.LightSkyBlue;
@@ -278,6 +291,7 @@
             this.ClientSize = new System.Drawing.Size(986, 553);
             this.Controls.Add(this.lblAiSonuc);
             this.Controls.Add(this.btnAiOner);
+            this.Controls.Add(this.btnRapor);
             this.Controls.Add(this.btnDurumTakip);
             this.Controls.Add(this.btnHarita);
             this.Controls.Add(this.btnEslestirme);
@@ -325,6 +339,7 @@
         private System.Windows.Forms.Button btnEslestirme;
         private System.Windows.Forms.Button btnHarita;
         private System.Windows.Forms.Button btnDurumTakip;
+        private System.Windows.Forms.Button btnRapor;
         private System.Windows.Forms.Button btnAiOner;
         private System.Windows.Forms.Label lblAiSonuc;
     }
