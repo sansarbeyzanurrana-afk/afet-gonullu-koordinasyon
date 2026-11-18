@@ -114,7 +114,7 @@
             this.Controls.Add(this.txtEmail);
             this.Controls.Add(this.label1);
             this.Name = "GirisForm";
-            this.Text = "GirisForm";
+            this.Text = "Giriş - Afet Sonrası İhtiyaç ve Gönüllü Koordinasyon";
             this.Load += new System.EventHandler(this.GirisForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

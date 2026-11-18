@@ -399,3 +399,8 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Hafta 14: gerçek API anahtarlarını içeren yerel betik ve .env dosyaları depoya gitmez
+ortam-degiskenleri.ps1
+.env
+*.env

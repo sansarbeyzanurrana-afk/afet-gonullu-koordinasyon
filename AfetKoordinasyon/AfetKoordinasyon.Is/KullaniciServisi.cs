@@ -10,16 +10,40 @@ namespace AfetKoordinasyon.Is
         private const int MaksHataliGiris = 5;
         private const int KilitDakika = 15;
 
+        // Normal kayıt: kullanıcı kendine sadece Afetzede ya da Gönüllü rolü seçebilir
         public void KayitOl(string adSoyad, string email, string parola, string rol)
+        {
+            if (rol != "Afetzede" && rol != "Gonullu")
+                throw new ArgumentException("Geçersiz rol.");
+            Olustur(adSoyad, email, parola, rol);
+        }
+
+        // İLK KURULUM (Hafta 14): sistemde hiç koordinatör yoksa ilk koordinatör hesabı oluşturulur.
+        // Depoda varsayılan kullanıcı/parola tutulmaz; koordinatör varken bu yolla yenisi açılamaz.
+        public void IlkKoordinatoruOlustur(string adSoyad, string email, string parola)
+        {
+            if (KoordinatorVarMi())
+                throw new InvalidOperationException("Sistemde zaten bir koordinatör hesabı var.");
+            Olustur(adSoyad, email, parola, "Koordinator");
+        }
+
+        public bool KoordinatorVarMi()
+        {
+            using (var db = new AfetDbContext())
+                return db.Kullanicilar.Any(k => k.Rol.Trim() == "Koordinator");
+        }
+
+        private void Olustur(string adSoyad, string email, string parola, string rol)
         {
             if (string.IsNullOrWhiteSpace(adSoyad) || string.IsNullOrWhiteSpace(email))
                 throw new ArgumentException("Ad soyad ve e-posta zorunludur.");
-            if (parola == null || parola.Length < 8)
-                throw new ArgumentException("Parola en az 8 karakter olmalıdır.");
-            if (rol != "Afetzede" && rol != "Gonullu")
-                throw new ArgumentException("Geçersiz rol.");
 
             email = email.Trim().ToLowerInvariant();
+            int at = email.IndexOf('@');
+            if (at < 1 || email.IndexOf('.', at) < at + 2 || email.EndsWith(".") || email.Contains(" "))
+                throw new ArgumentException("Geçerli bir e-posta adresi girin (ör. ad@ornek.com).");
+            if (parola == null || parola.Length < 8)
+                throw new ArgumentException("Parola en az 8 karakter olmalıdır.");
 
             using (var db = new AfetDbContext())
             {

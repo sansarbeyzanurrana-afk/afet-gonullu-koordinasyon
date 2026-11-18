@@ -71,6 +71,7 @@
                 !context.Eslesmeler.Any(e => e.GonulluId == g1.GonulluId && e.Aktif))
             {
                 context.Eslesmeler.Add(new Eslesme { IhtiyacId = gida.IhtiyacId, GonulluId = g1.GonulluId, Tarih = new DateTime(2026, 10, 3), Aktif = true });
+                g1.MusaitMi = false;   // aktif işi olan gönüllü müsait görünmemeli (Hafta 13'te bulunan B2 hatası)
                 context.SaveChanges();
             }
         }

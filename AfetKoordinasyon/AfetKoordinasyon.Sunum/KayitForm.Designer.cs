@@ -172,7 +172,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "KayitForm";
-            this.Text = "KayitForm";
+            this.Text = "Yeni Kullanıcı Kaydı";
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -33,9 +33,48 @@ namespace AfetKoordinasyon.Sunum
             Text = "İhtiyaç Yönetimi - " + Oturum.AktifKullanici.AdSoyad
                    + " (" + Oturum.AktifKullanici.Rol + ")";
 
+            bool koordinator = string.Equals(Oturum.AktifKullanici.Rol?.Trim(), "Koordinator", StringComparison.OrdinalIgnoreCase);
+
             // Bildirimler sadece koordinatöre: atama yapabilen tek kişi o
-            if (string.Equals(Oturum.AktifKullanici.Rol?.Trim(), "Koordinator", StringComparison.OrdinalIgnoreCase))
+            if (koordinator)
                 BildirimleriBaslat();
+
+            ArayuzuDuzenle(koordinator);
+        }
+
+        // KULLANILABİLİRLİK (Hafta 14): ipuçları, kısayol, rol'e göre görünen butonlar
+        private void ArayuzuDuzenle(bool koordinator)
+        {
+            // Koordinatöre özel ekranlar diğer rollerde gizlenir
+            // (önceden görünüyordu ama işlem yapınca yetki hatası veriyordu)
+            btnEslestirme.Visible = koordinator;
+            btnRapor.Visible = koordinator;
+
+            var ipucu = new ToolTip { AutoPopDelay = 8000 };
+            ipucu.SetToolTip(btnAiOner, "Açıklamaya göre kategori ve aciliyet önerir. Yapay zekâ çalışmazsa kural tabanlı yedek kullanılır.");
+            ipucu.SetToolTip(btnEkle, "Yeni ihtiyacı kaydeder");
+            ipucu.SetToolTip(btnGuncelle, "Listeden seçili ihtiyacı günceller");
+            ipucu.SetToolTip(btnSil, koordinator ? "Seçili ihtiyacı siler" : "Sadece koordinatör silebilir");
+            ipucu.SetToolTip(btnRapor, "Durum raporu, grafikler ve CSV dışa aktarma");
+            ipucu.SetToolTip(btnDurumTakip, "Durumları güncelle, gönüllü ata, geçmişi gör");
+            ipucu.SetToolTip(btnEslestirme, "Bekleyen ihtiyaçlara müsait gönüllü ata");
+            ipucu.SetToolTip(btnHarita, "Bölgelere göre ihtiyaç ve gönüllü haritası");
+            ipucu.SetToolTip(dgvIhtiyaclar, "F5: listeyi yenile");
+
+            // Ekran okuyucular için alan adları
+            txtTur.AccessibleName = "Tür";
+            txtAciklama.AccessibleName = "Açıklama";
+            nudMiktar.AccessibleName = "Miktar";
+            cmbKonum.AccessibleName = "Konum";
+            cmbKategori.AccessibleName = "Kategori";
+            dgvIhtiyaclar.AccessibleName = "İhtiyaç listesi";
+
+            // F5: listeyi yenile
+            KeyPreview = true;
+            KeyDown += (s, e) =>
+            {
+                if (e.KeyCode == Keys.F5) { ListeyiYenile(); e.Handled = true; }
+            };
         }
 
         private void Form1_Load(object sender, EventArgs e)

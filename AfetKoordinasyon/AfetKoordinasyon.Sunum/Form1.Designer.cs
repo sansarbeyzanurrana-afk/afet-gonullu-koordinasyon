@@ -77,6 +77,9 @@
             this.nudMiktar.Name = "nudMiktar";
             this.nudMiktar.Size = new System.Drawing.Size(191, 22);
             this.nudMiktar.TabIndex = 2;
+            this.nudMiktar.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
+            this.nudMiktar.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            this.nudMiktar.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
             // label1
             // 
@@ -160,7 +163,7 @@
             this.btnGuncelle.Font = new System.Drawing.Font("Microsoft YaHei", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.btnGuncelle.Location = new System.Drawing.Point(413, 159);
             this.btnGuncelle.Name = "btnGuncelle";
-            this.btnGuncelle.Size = new System.Drawing.Size(87, 35);
+            this.btnGuncelle.Size = new System.Drawing.Size(105, 35);
             this.btnGuncelle.TabIndex = 10;
             this.btnGuncelle.Text = "Güncelle";
             this.btnGuncelle.UseVisualStyleBackColor = false;

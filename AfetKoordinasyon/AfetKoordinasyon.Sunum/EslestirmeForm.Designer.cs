@@ -104,7 +104,7 @@
             this.Controls.Add(this.dgvGonulluler);
             this.Controls.Add(this.dgvIhtiyaclar);
             this.Name = "EslestirmeForm";
-            this.Text = "EslestirmeForm";
+            this.Text = "Gönüllü Eşleştirme";
             this.Load += new System.EventHandler(this.EslestirmeForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvIhtiyaclar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGonulluler)).EndInit();
