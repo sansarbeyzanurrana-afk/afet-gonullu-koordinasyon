@@ -16,6 +16,7 @@ namespace AfetKoordinasyon.Sunum
 
         // Son alınan AI önerisi (açıklama değişirse geçersiz olur)
         private OncelikSonucu _sonOneri;
+        private readonly ToolTip _aiIpucu = new ToolTip { AutoPopDelay = 15000 };
 
         // BİLDİRİM (Hafta 12): zamanlayıcı ile kritik bekleyen talepleri kontrol eder
         private readonly BildirimServisi _bildirimServisi = new BildirimServisi();
@@ -31,8 +32,9 @@ namespace AfetKoordinasyon.Sunum
             btnEkle.Click += btnEkle_Click;
             dgvIhtiyaclar.CellClick += dgvIhtiyaclar_CellClick;
             btnSil.Enabled = string.Equals(Oturum.AktifKullanici.Rol?.Trim(), "Koordinator", StringComparison.OrdinalIgnoreCase);
+            var surum = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             Text = "İhtiyaç Yönetimi - " + Oturum.AktifKullanici.AdSoyad
-                   + " (" + Oturum.AktifKullanici.Rol + ")";
+                   + " (" + Oturum.AktifKullanici.Rol + ")  ·  v" + surum.ToString(3);
 
             bool koordinator = string.Equals(Oturum.AktifKullanici.Rol?.Trim(), "Koordinator", StringComparison.OrdinalIgnoreCase);
 
@@ -56,8 +58,9 @@ namespace AfetKoordinasyon.Sunum
                 b.Font = Tema.Kalin(11f);
             lblAiSonuc.BackColor = Color.FromArgb(240, 248, 255);
             lblAiSonuc.ForeColor = Tema.Metin;
-            lblAiSonuc.Font = Tema.Yazi(9f);
-            lblAiSonuc.Padding = new Padding(6);
+            lblAiSonuc.Font = Tema.Yazi(8.5f);
+            lblAiSonuc.Padding = new Padding(4, 2, 4, 2);
+            lblAiSonuc.AutoEllipsis = true;      // sığmayan metin "..." ile biter, tamamı ipucunda görünür
 
             // Koordinatöre özel ekranlar diğer rollerde gizlenir
             // (önceden görünüyordu ama işlem yapınca yetki hatası veriyordu)
@@ -333,9 +336,11 @@ namespace AfetKoordinasyon.Sunum
                 if (string.IsNullOrWhiteSpace(txtTur.Text))
                     txtTur.Text = oneri.KategoriAd;
 
-                lblAiSonuc.Text = "ÖNERİ (" + oneri.Kaynak + ") - lütfen kontrol edin:\n"
-                                + "Kategori: " + oneri.KategoriAd + "  |  Aciliyet: " + oneri.Aciliyet + "/5\n"
+                // Önemli bilgi ilk satırda; kaynak ve gerekçe altta. Tam metin fareyle üzerine gelince görünür.
+                lblAiSonuc.Text = "Öneri: " + oneri.KategoriAd + "  ·  Aciliyet " + oneri.Aciliyet + "/5"
+                                + "  (" + oneri.Kaynak + ")  - kontrol edip Ekle'ye basın\n"
                                 + oneri.Gerekce;
+                _aiIpucu.SetToolTip(lblAiSonuc, lblAiSonuc.Text);
 
                 if (oneri.Uyari != null)
                     MessageBox.Show(oneri.Uyari, "Yapay zekâ kullanılamadı",

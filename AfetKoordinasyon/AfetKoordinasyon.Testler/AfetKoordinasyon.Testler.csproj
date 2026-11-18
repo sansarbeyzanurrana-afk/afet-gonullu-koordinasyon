@@ -64,6 +64,7 @@
     <Compile Include="KvkkMaskelemeTestleri.cs" />
     <Compile Include="YapayZekaDogrulamaTestleri.cs" />
     <Compile Include="DurumAkisiEntegrasyonTestleri.cs" />
+    <Compile Include="GonulluTestleri.cs" />
     <Compile Include="kendiTestlerim.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

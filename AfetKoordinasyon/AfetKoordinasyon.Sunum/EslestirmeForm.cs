@@ -38,6 +38,23 @@ public partial class EslestirmeForm : Form
         BaslikEkle("1) Bekleyen ihtiyaçlar", dgvIhtiyaclar);
         BaslikEkle("2) Uygun gönüllüler (aynı bölge, müsait)", dgvGonulluler);
         BaslikEkle("Eşleşmiş ihtiyaçlar", dgvEslesmisler);
+
+        // Uygun gönüllü yoksa koordinatör buradan yeni gönüllü ekleyebilir (Hafta 15)
+        var btnGonulluler = new Button
+        {
+            Text = "Gönüllü Yönetimi",
+            Location = new Point(btnTamamla.Right + 30, btnTamamla.Top),
+            Size = new Size(200, btnTamamla.Height)
+        };
+        Tema.ButonIkincil(btnGonulluler, 11f);
+        btnGonulluler.Click += (s, e) =>
+        {
+            using (var f = new GonulluForm())
+                f.ShowDialog(this);
+            dgvIhtiyaclar_SelectionChanged(this, EventArgs.Empty);   // uygun gönüllü listesini yenile
+        };
+        Controls.Add(btnGonulluler);
+        new ToolTip().SetToolTip(btnGonulluler, "Gönüllüleri listele ve yeni gönüllü ekle");
     }
 
     private void BaslikEkle(string metin, Control tablo)

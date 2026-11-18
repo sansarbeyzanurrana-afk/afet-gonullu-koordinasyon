@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace AfetKoordinasyon.Sunum
@@ -88,6 +89,26 @@ namespace AfetKoordinasyon.Sunum
             b.FlatAppearance.MouseOverBackColor = uzerinde;
             b.Font = Kalin(boyut);
             b.Cursor = Cursors.Hand;
+
+            // Pasif buton gri görünsün: kullanıcı tıklanamayan butonu aktif sanmasın (Hafta 15 düzeltmesi)
+            b.Tag = new[] { zemin, yazi, kenarRengi };
+            b.EnabledChanged -= PasifGorunum;
+            b.EnabledChanged += PasifGorunum;
+            PasifGorunum(b, EventArgs.Empty);
+        }
+
+        private static readonly Color PasifZemin = Color.FromArgb(226, 232, 240);
+        private static readonly Color PasifYazi = Color.FromArgb(148, 163, 184);
+
+        private static void PasifGorunum(object sender, EventArgs e)
+        {
+            var b = (Button)sender;
+            var renkler = b.Tag as Color[];
+            if (renkler == null) return;
+            b.BackColor = b.Enabled ? renkler[0] : PasifZemin;
+            b.ForeColor = b.Enabled ? renkler[1] : PasifYazi;
+            b.FlatAppearance.BorderColor = b.Enabled ? renkler[2] : PasifZemin;
+            b.Cursor = b.Enabled ? Cursors.Hand : Cursors.Default;
         }
 
         public static void ButonAna(Button b, float boyut = 10f)     { Buton(b, Turuncu, Color.White, TuruncuKoyu, 0, Turuncu, boyut); }
@@ -148,7 +169,11 @@ namespace AfetKoordinasyon.Sunum
                     var b = (Button)c;
                     bool tehlike = b.ForeColor == Color.DarkRed;      // ör. İptal Et
                     ButonIkincil(b, 9.5f);
-                    if (tehlike) b.ForeColor = Kirmizi;
+                    if (tehlike)
+                    {
+                        ((Color[])b.Tag)[1] = Kirmizi;
+                        if (b.Enabled) b.ForeColor = Kirmizi;
+                    }
                 }
                 else if (c is GroupBox)
                 {

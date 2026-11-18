@@ -103,6 +103,9 @@
     <Compile Include="GirisForm.Designer.cs">
       <DependentUpon>GirisForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="GonulluForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="HaritaForm.cs">
       <SubType>Form</SubType>
     </Compile>

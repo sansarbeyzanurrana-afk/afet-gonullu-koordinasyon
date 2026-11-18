@@ -1,7 +1,7 @@
 # Afet Sonrası İhtiyaç ve Gönüllü Koordinasyon Sistemi
 
 **P13 · Afet Yönetimi Grubu** · Bilgisayar Uygulamaları I · Bingöl Üniversitesi
-Geliştirici: Beyzanur Rana Sansar
+Geliştirici: Beyzanur Rana Sansar · **Sürüm: v1.0.0** ([sürüm notları](CHANGELOG.md))
 
 Afet sonrasında ihtiyaçların konum bilgisiyle toplanmasını, bu ihtiyaçların uygun gönüllülerle eşleştirilmesini ve her ihtiyacın durumunun takip edilmesini sağlayan Windows masaüstü uygulaması.
 
@@ -30,11 +30,13 @@ Ayrıntılı teknik bilgi (veri modeli, durum makinesi, API'ler, güvenlik): **[
 - Rol tabanlı giriş: **Afetzede**, **Gönüllü**, **Koordinatör**
 - İhtiyaç bildirimi (tür, açıklama, miktar, konum, kategori)
 - **Yapay zekâ** ile kategori ve aciliyet (1–5) önerisi; yapay zekâ çalışmazsa kural tabanlı yedek
+- **Gönüllü yönetimi**: koordinatör gönüllüleri listeler ve yeni gönüllü ekler
 - Müsait gönüllü ile **eşleştirme**; bir gönüllü aynı anda tek işte
 - **Durum takibi**: Bekliyor → Eşleşti → Yolda → Tamamlandı / İptal, değişiklik geçmişiyle
 - **Harita**: bölgelerin en acil duruma göre renklendirilmesi (OpenStreetMap + LocationIQ)
 - **Durum raporu**: karşılanma oranı, bölge/kategori/aciliyet dağılımı, grafikler, CSV dışa aktarma
 - **Bildirim**: uzun süredir bekleyen kritik ihtiyaçlar için koordinatöre Windows bildirimi
+- **Erişilebilir arayüz**: ortak tema, yüksek kontrast, klavye kısayolları, ekran okuyucu için alan adları
 
 ## Teknolojiler
 | Alan | Kullanılan |
@@ -102,16 +104,18 @@ API anahtarları **kodda ve depoda tutulmaz**; Windows kullanıcı ortam değiş
 2. **Giriş:** Oluşturduğunuz hesapla giriş yapın (Enter tuşu da çalışır).
 3. **Diğer kullanıcılar:** Giriş ekranındaki **Kayıt Ol** ile Afetzede veya Gönüllü hesabı açılır.
 4. **Örnek akış (koordinatör):**
-   1. Ana ekranda tür, açıklama, miktar, konum girin → **AI ile Öner** → **Ekle**
-   2. **Eşleştirme**: bekleyen ihtiyacı ve müsait gönüllüyü seçip eşleştirin
+   1. Ana ekranda tür, açıklama, miktar, konum girin → önce **AI ile Öner**, öneriyi kontrol edin → **Ekle**
+   2. **Eşleştirme**: bekleyen ihtiyacı ve müsait gönüllüyü seçip eşleştirin (uygun gönüllü yoksa **Gönüllü Yönetimi** ile ekleyin)
    3. **Durum Takibi**: Yola çıktı → Tamamlandı; geçmişi görün
    4. **Harita** ve **Durum Raporu** ile genel durumu izleyin, raporu CSV olarak alın
 
 Kısayollar: **Enter** (giriş/kayıt), **Esc** (kayıt penceresini kapat), **F5** (listeyi yenile). Butonların üzerinde bekleyince açıklama çıkar.
 
+Arka plan görselleri projeye özel çizilmiştir (telifsiz, gerçek kişi içermez).
+
 ## Testleri çalıştırma
 1. **Test → Test Explorer** → **Run All Tests**
-2. 59 test vardır (birim + entegrasyon). Entegrasyon testleri **ayrı bir test veritabanında** (`AfetKoordinasyonTestDb`) çalışır; asıl veritabanı etkilenmez. İlk çalıştırma test veritabanını oluşturduğu için 20–30 saniye sürebilir.
+2. Birim ve entegrasyon testlerinin tamamı geçmelidir. Entegrasyon testleri **ayrı bir test veritabanında** (`AfetKoordinasyonTestDb`) çalışır; asıl veritabanı etkilenmez. İlk çalıştırma test veritabanını oluşturduğu için 20–30 saniye sürebilir.
 
 Ayrıntı: Hafta 13 test sonuç raporu.
 
@@ -128,6 +132,7 @@ Ayrıntı: Hafta 13 test sonuç raporu.
 ```
 afet-gonullu-koordinasyon/
 ├─ README.md
+├─ CHANGELOG.md                     Sürüm notları
 ├─ ortam-degiskenleri-ornek.ps1     API anahtarları için örnek betik (gerçek anahtar içermez)
 ├─ er-diyagrami.png
 ├─ docs/
@@ -169,7 +174,7 @@ flowchart TD
 ## Modüller
 1. **Kullanıcı:** Kullanıcılar kayıt olup giriş yapabiliyor ve rollerine (afetzede, gönüllü, koordinatör) göre farklı ekranlar görüyor. Parolalar şifrelenerek saklanıyor; 5 hatalı denemede hesap 15 dakika kilitleniyor.
 2. **İhtiyaç bildirimi:** Kullanıcı ihtiyacını tür, açıklama, miktar, konum ve kategori bilgisiyle bildiriyor. Yeni ihtiyaç ilk olarak "Bekliyor" durumunda kaydediliyor.
-3. **Eşleştirme:** Koordinatör, bekleyen bir ihtiyaca aynı bölgedeki müsait bir gönüllüyü atıyor. Bir gönüllü aynı anda sadece tek bir işte görev alabiliyor; bu kural hem kodda hem veritabanında kontrol ediliyor.
+3. **Eşleştirme:** Koordinatör, bekleyen bir ihtiyaca aynı bölgedeki müsait bir gönüllüyü atıyor. Yeni gönüllüleri Gönüllü Yönetimi ekranından ekliyor. Bir gönüllü aynı anda sadece tek bir işte görev alabiliyor; bu kural hem kodda hem veritabanında kontrol ediliyor.
 4. **Durum takibi:** Bir ihtiyaç Bekliyor → Eşleşti → Yolda → Tamamlandı sırasıyla ilerliyor ve gerekirse İptal edilebiliyor. Her durum değişikliği; kim yaptı, ne zaman ve neden bilgisiyle geçmişe kaydediliyor.
 5. **Yapay zekâ ile önceliklendirme:** Yapay zekâ, ihtiyacın açıklamasına bakarak kategori ve aciliyet (1–5) önerisi veriyor; son kararı kullanıcı veriyor. Açıklamadaki telefon, e-posta ve TC numarası yapay zekâya gönderilmeden maskeleniyor. Yapay zekâ çalışmazsa yedek kurallar devreye giriyor.
 6. **Harita:** Haritada her bölge, oradaki en acil duruma göre renkli bir işaretle gösteriliyor (kırmızı: kritik bekleyen, turuncu: bekleyen, mavi: süreçte); gönüllüler yeşil işaretle görünüyor. Bölgelerin koordinatları LocationIQ servisinden bir kez alınıp veritabanına kaydediliyor.

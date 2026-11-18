@@ -1,6 +1,6 @@
 # Teknik Dokümantasyon
 
-**Afet Sonrası İhtiyaç ve Gönüllü Koordinasyon Sistemi** (P13) · Beyzanur Rana Sansar
+**Afet Sonrası İhtiyaç ve Gönüllü Koordinasyon Sistemi** (P13) · Beyzanur Rana Sansar · **v1.0.0**
 Kurulum ve kullanım için: [README.md](../README.md)
 
 ## İçindekiler
@@ -15,7 +15,9 @@ Kurulum ve kullanım için: [README.md](../README.md)
 9. Veritabanı kurulumu ve migration'lar
 10. Test
 11. Dağıtım
-12. Bilinen kısıtlar ve gelecek planı
+12. Arayüz ve erişilebilirlik
+13. Bilinen kısıtlar ve gelecek planı
+14. Uçtan uca doğrulama (v1.0.0)
 
 ---
 
@@ -27,7 +29,7 @@ Uygulama, afet sonrasında ihtiyaç bildirimlerini toplar, koordinatörün bu ih
 |---|---|
 | Afetzede | Kayıt, giriş, ihtiyaç bildirme, kendi ihtiyacına not ekleme |
 | Gönüllü | Kayıt, giriş, ihtiyaçları görme |
-| Koordinatör | Tüm işlemler: eşleştirme, durum değiştirme, iptal, silme, rapor, bildirimler |
+| Koordinatör | Tüm işlemler: gönüllü ekleme, eşleştirme, durum değiştirme, iptal, silme, rapor, bildirimler |
 
 ## 2. Mimari
 Projem Sunum, İş ve Veri olmak üzere üç katmandan oluşuyor. Formlarım (Sunum) doğrudan veritabanına gitmiyor; önce İş katmanındaki servisleri çağırıyor, servisler de Veri katmanı üzerinden veritabanına erişiyor (Form → Servis → Veritabanı). Bu yapıyı seçtim çünkü kod düzenli kalıyor, kurallar tek yerde duruyor, bir katman değişince diğerleri bozulmuyor ve kod test edilebiliyor.
@@ -69,7 +71,7 @@ flowchart LR
 |---|---|---|---|
 | 1 | Kullanıcı | Kullanıcılar kayıt olup giriş yapabiliyor ve rollerine (afetzede, gönüllü, koordinatör) göre farklı ekranlar görüyor. Parolalar şifrelenerek saklanıyor; 5 hatalı denemede hesap 15 dakika kilitleniyor. | `KullaniciServisi`, `Oturum`, `GirisForm`, `KayitForm` |
 | 2 | İhtiyaç bildirimi | Kullanıcı ihtiyacını tür, açıklama, miktar, konum ve kategori bilgisiyle bildiriyor. Yeni ihtiyaç ilk olarak "Bekliyor" durumunda kaydediliyor. | `IhtiyacServisi`, `Form1` |
-| 3 | Eşleştirme | Koordinatör, bekleyen bir ihtiyaca aynı bölgedeki müsait bir gönüllüyü atıyor. Bir gönüllü aynı anda sadece tek bir işte görev alabiliyor; bu kural hem kodda hem veritabanında kontrol ediliyor. | `EslesmeServisi`, `EslestirmeForm` |
+| 3 | Eşleştirme | Koordinatör, bekleyen bir ihtiyaca aynı bölgedeki müsait bir gönüllüyü atıyor. Bir gönüllü aynı anda sadece tek bir işte görev alabiliyor; bu kural hem kodda hem veritabanında kontrol ediliyor. Yeni gönüllüler Gönüllü Yönetimi ekranından ekleniyor. | `EslesmeServisi`, `EslestirmeForm`, `GonulluServisi`, `GonulluForm` |
 | 4 | Durum takibi | Bir ihtiyaç Bekliyor → Eşleşti → Yolda → Tamamlandı sırasıyla ilerliyor ve gerekirse İptal edilebiliyor. Her durum değişikliği; kim yaptı, ne zaman ve neden bilgisiyle geçmişe kaydediliyor. | `DurumServisi`, `DurumTakipForm` |
 | 5 | Yapay zekâ | Yapay zekâ, ihtiyacın açıklamasına bakarak kategori ve aciliyet (1–5) önerisi veriyor; son kararı kullanıcı veriyor. Açıklamadaki telefon, e-posta ve TC numarası yapay zekâya gönderilmeden maskeleniyor. Yapay zekâ çalışmazsa yedek kurallar devreye giriyor. | `IhtiyacOnceliklendirmeServisi` |
 | 6 | Harita | Haritada her bölge, oradaki en acil duruma göre renkli bir işaretle gösteriliyor (kırmızı: kritik bekleyen, turuncu: bekleyen, mavi: süreçte); gönüllüler yeşil işaretle görünüyor. Bölgelerin koordinatları LocationIQ servisinden bir kez alınıp veritabanına kaydediliyor. | `HaritaServisi`, `KoordinatServisi`, `HaritaForm` |
@@ -81,7 +83,8 @@ flowchart LR
 | Servis | Metotlar |
 |---|---|
 | `KullaniciServisi` | `KayitOl`, `GirisYap`, `KoordinatorVarMi`, `IlkKoordinatoruOlustur` |
-| `IhtiyacServisi` | `Listele`, `BekleyenleriListele`, `Ekle`, `Guncelle`, `Sil` (koordinatör) |
+| `IhtiyacServisi` | `Listele`, `BekleyenleriListele`, `Ekle`, `Guncelle` (sahibi veya koordinatör), `Sil` (koordinatör) |
+| `GonulluServisi` | `Listele`, `Ekle` (koordinatör; telefon `05` + 9 hane, konum zorunlu) |
 | `EslesmeServisi` | `BekleyenIhtiyaclariGetir`, `UygunGonulluleriGetir`, `Eslestir`, `Tamamla` (→ `DurumServisi`) |
 | `DurumServisi` | `Ata`, `YolaCikti`, `Tamamla`, `AtamayiKaldir`, `IptalEt`, `NotEkle`, `TakipListesi`, `GecmisiGetir`, `GecisGecerliMi` |
 | `IhtiyacOnceliklendirmeServisi` | `DegerlendirAsync`, `KisiselVeriMaskele` |
@@ -193,11 +196,11 @@ Uygulama açılırken `KurulumServisi.VeritabaniniHazirla()` → `VeritabaniKuru
 Geliştirici yeni migration eklerken: Package Manager Console → `Add-Migration Ad -ProjectName AfetKoordinasyon.Veri`, sonra `Update-Database -ProjectName AfetKoordinasyon.Veri` (ya da uygulamayı çalıştırmak yeterli).
 
 ## 10. Test
-- **AfetKoordinasyon.Testler** (MSTest): 59 test.
-  - Birim: durum makinesi, yetki ve not kuralları, rapor/bildirim metinleri, KVKK maskeleme, yapay zekâ çıktı doğrulama, kural tabanlı yedek.
+- **AfetKoordinasyon.Testler** (MSTest): tüm testler geçiyor.
+  - Birim: durum makinesi, yetki ve not kuralları, gönüllü ekleme kuralları, rapor/bildirim metinleri, KVKK maskeleme, yapay zekâ çıktı doğrulama, kural tabanlı yedek.
   - Entegrasyon (gerçek LocalDB, ayrı test veritabanı): atama → yola çıkış → tamamlama, çift atama (kod + indeks), iptal, eşzamanlılık.
 - Testler dış API'lere istek atmaz.
-- Arayüz (formlar) elle test edilir.
+- Arayüz (formlar) elle test edilir; final sürümde uçtan uca demo senaryosu baştan sona doğrulandı (bkz. 14. bölüm).
 
 ## 11. Dağıtım
 - **Yöntem:** Release derlemesi + `bin\Release` klasörünün ZIP olarak paylaşılması (xcopy dağıtımı). Kurulum programı gerekmez.
@@ -212,8 +215,54 @@ Geliştirici yeni migration eklerken: Package Manager Console → `Add-Migration
   | API anahtarı yok | Uygulama çalışmaya devam eder (yedek kurallar, kayıtlı koordinatlar) |
   | Sadece exe kopyalanır | README'de tüm `Release` klasörünün paylaşılması gerektiği yazılı |
 
-## 12. Bilinen kısıtlar ve gelecek planı
+## 12. Arayüz ve erişilebilirlik
+**Ortak tema:** `AfetKoordinasyon.Sunum/Tema.cs` tüm formlara aynı renkleri, yazı tipini (Segoe UI), buton ve tablo stilini uygular.
+| Renk | Kullanım |
+|---|---|
+| Lacivert `#173B5C` | Araç çubukları, tablo başlıkları |
+| Turuncu `#E8772E` | Ana işlem butonları (Giriş, Ekle, Kaydet, Eşleştir, CSV) |
+| Kırmızı `#C0392B` | Geri alınamaz işlemler (Sil, İptal Et) |
+| Turkuaz `#2A9D8F` | Yapay zekâ önerisi |
+
+- Giriş, kayıt, ana ekran ve eşleştirme ekranlarında **projeye özel çizilmiş** arka planlar kullanılır (`Resources/ArkaPlanGiris.jpg`, `ArkaPlanAna.jpg`). Telifsizdirler, gerçek kişi içermezler. Önceki sürümdeki basın fotoğrafları kaldırıldı.
+- Veri yoğun ekranlar (Durum Takibi, Harita, Rapor) okunabilirlik için açık zeminlidir.
+
+**Kullanılabilirlik ve erişilebilirlik iyileştirmeleri (Hafta 14)**
+| İyileştirme | Neden |
+|---|---|
+| Koyu zeminde beyaz, beyaz kartta koyu yazı | Metin ile arka plan arasında yüksek kontrast; okunabilirlik |
+| Formlar kart düzeninde, etiket her alanın üstünde | Hangi kutuya ne yazılacağı açık |
+| Enter = Giriş/Kaydet, Esc = Kapat, F5 = Yenile | Fare kullanmadan işlem yapılabilir |
+| Açılışta imleç ilk alanda | Gereksiz tıklama yok |
+| Alanlara `AccessibleName` | Ekran okuyucular alanı adıyla okur |
+| Butonlarda ipucu (ToolTip) | Butonun ne yaptığı üzerine gelince görünür |
+| Durum Takibi'nde butonlar durum makinesine göre açılır | Yapılamayacak işlem baştan gösterilmez |
+| Koordinatöre özel butonlar diğer rollerde gizli | Önceden görünüp yetki hatası veriyordu |
+| Anlamlı pencere başlıkları ("GirisForm" → "Giriş - …") | Görev çubuğunda ve ekran okuyucuda doğru ad |
+| Boş alan, geçersiz e-posta, kısa parola için Türkçe uyarı | Hata nedeni açıkça söylenir |
+| Miktar 1'den başlar, en fazla 100.000 | 0 adet bildirilemez, büyük miktarlar girilebilir |
+| Teknik hata yığını yerine anlaşılır hata mesajı | Kullanıcı ne yapacağını bilir |
+
+## 13. Bilinen kısıtlar ve gelecek planı
 - Kural tabanlı yedek, ekli kelimelerde (ör. "bebeğim") anahtar kelimeyi yakalamayabilir.
 - Formlar için otomatik arayüz testi yok.
+- Afetzede ve gönüllü rolleri tüm ihtiyaç listesini görebiliyor (güncelleme/silme yetkisi yok); ileride sadece kendi kayıtlarını görmeleri sağlanabilir.
+- Gönüllü kaydı silinemiyor/düzenlenemiyor (sadece ekleme var).
 - Uygulama tek bilgisayarda (LocalDB) çalışır; birden çok koordinatörün farklı bilgisayarlardan çalışması için ortak bir SQL Server gerekir. Bağlantı dizesi değiştirilerek yapılabilir.
 - **Gelecek:** Türkiye'deki tüm il ve ilçelerin listeden seçilmesi; gönüllüler için mobil uygulama.
+
+## 14. Uçtan uca doğrulama (v1.0.0)
+Final sürümden önce aşağıdaki senaryo uydurma verilerle baştan sona çalıştırıldı; tüm adımlar başarılı.
+
+| # | Adım | Beklenen | Sonuç |
+|---|---|---|---|
+| 1 | Koordinatör girişi (Enter) | Ana ekran açılır, sürüm başlıkta | ✅ |
+| 2 | Gönüllü Yönetimi: hatalı telefon, sonra doğru kayıt | Uyarı; gönüllü "Müsait" olarak listelenir | ✅ |
+| 3 | İhtiyaç: AI ile Öner → Ekle | Kategori ve aciliyet önerisi; ihtiyaç "Bekliyor" | ✅ |
+| 4 | Eşleştirme | Yeni gönüllü uygun listede; ihtiyaç "Eşleşti" | ✅ |
+| 5 | Durum Takibi: Yola Çıktı → Tamamlandı; son durumda butonlar pasif; boş notla iptal reddi; notla iptal | Geçmişte tüm geçişler, kullanıcı ve notlarla | ✅ |
+| 6 | Harita | Bölge sayıları güncel | ✅ |
+| 7 | Durum Raporu + CSV | Karşılanan sayısı arttı; CSV Excel'de açıldı | ✅ |
+| 8 | Afetzede hesabı | Eşleştirme ve Rapor butonları görünmez, Sil pasif | ✅ |
+
+Bu doğrulama sırasında bulunup düzeltilenler: gönüllü ekleme ekranının eksik olması, AI öneri metninin kesilmesi, pasif butonların aktif görünmesi (ayrıntı: CHANGELOG.md).
