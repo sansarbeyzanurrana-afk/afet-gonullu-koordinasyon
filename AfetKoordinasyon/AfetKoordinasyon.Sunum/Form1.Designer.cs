@@ -290,7 +290,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Info;
-            this.BackgroundImage = global::AfetKoordinasyon.Sunum.Properties.Resources.deprem;
             this.ClientSize = new System.Drawing.Size(986, 553);
             this.Controls.Add(this.lblAiSonuc);
             this.Controls.Add(this.btnAiOner);

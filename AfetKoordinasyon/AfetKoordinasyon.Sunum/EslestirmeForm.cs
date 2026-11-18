@@ -18,6 +18,33 @@ public partial class EslestirmeForm : Form
     public EslestirmeForm()
     {
         InitializeComponent();
+        GorunumuDuzenle();
+    }
+
+    // GÖRÜNÜM (Hafta 14): ortak tema ve her tablonun üstünde ne gösterdiğini anlatan başlık
+    private void GorunumuDuzenle()
+    {
+        Tema.Uygula(this, Properties.Resources.ArkaPlanAna);
+        Tema.ButonAna(btnEslestir);
+        btnEslestir.Font = Tema.Kalin(12f);
+        btnTamamla.Font = Tema.Kalin(11f);
+        StartPosition = FormStartPosition.CenterParent;
+
+        // Başlıklara yer açmak için tüm kontrolleri biraz aşağı kaydır
+        const int pay = 34;
+        foreach (Control c in Controls) c.Top += pay;
+        ClientSize = new Size(ClientSize.Width, ClientSize.Height + pay);
+
+        BaslikEkle("1) Bekleyen ihtiyaçlar", dgvIhtiyaclar);
+        BaslikEkle("2) Uygun gönüllüler (aynı bölge, müsait)", dgvGonulluler);
+        BaslikEkle("Eşleşmiş ihtiyaçlar", dgvEslesmisler);
+    }
+
+    private void BaslikEkle(string metin, Control tablo)
+    {
+        var l = Tema.Baslik(metin, 11.5f, Color.White);
+        l.Location = new Point(tablo.Left, tablo.Top - 30);
+        Controls.Add(l);
     }
 
     private void EslestirmeForm_Load(object sender, EventArgs e)

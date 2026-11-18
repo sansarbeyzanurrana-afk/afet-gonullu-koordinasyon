@@ -97,6 +97,7 @@ namespace AfetKoordinasyon.Sunum
             Controls.Add(sag);
             Controls.Add(ust);
             Controls.Add(lblKaynak);
+            Tema.UygulaAcik(this);   // ortak tema (Hafta 14)
 
             // --- Olaylar ---
             Load += HaritaForm_Load;

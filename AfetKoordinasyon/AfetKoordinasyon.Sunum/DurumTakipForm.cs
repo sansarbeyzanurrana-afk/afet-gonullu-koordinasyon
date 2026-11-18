@@ -109,6 +109,7 @@ namespace AfetKoordinasyon.Sunum
             Controls.Add(dgvTakip);
             Controls.Add(alt);
             Controls.Add(ust);
+            Tema.UygulaAcik(this);   // ortak tema (Hafta 14)
 
             // --- Olaylar ---
             Load += (s, e) => ListeyiYenile();

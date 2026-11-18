@@ -93,6 +93,8 @@ namespace AfetKoordinasyon.Sunum
             Controls.Add(lblOzet);
             Controls.Add(kartlar);
             Controls.Add(ust);
+            Tema.UygulaAcik(this);   // ortak tema (Hafta 14)
+            Tema.ButonAna(btnDisaAktar, 9.5f);
 
             // --- Olaylar ---
             Load += (s, e) => Yukle();

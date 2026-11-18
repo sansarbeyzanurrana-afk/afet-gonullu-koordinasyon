@@ -63,9 +63,9 @@ namespace AfetKoordinasyon.Sunum.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap deprem {
+        internal static System.Drawing.Bitmap ArkaPlanAna {
             get {
-                object obj = ResourceManager.GetObject("deprem", resourceCulture);
+                object obj = ResourceManager.GetObject("ArkaPlanAna", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,41 +73,12 @@ namespace AfetKoordinasyon.Sunum.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap images {
+        internal static System.Drawing.Bitmap ArkaPlanGiris {
             get {
-                object obj = ResourceManager.GetObject("images", resourceCulture);
+                object obj = ResourceManager.GetObject("ArkaPlanGiris", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap sel {
-            get {
-                object obj = ResourceManager.GetObject("sel", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap yilin_basin_fotograflarina_deprem_damgasi {
-            get {
-                object obj = ResourceManager.GetObject("yilin-basin-fotograflarina-deprem-damgasi", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap yilin_basin_fotograflarina_deprem_damgasi1 {
-            get {
-                object obj = ResourceManager.GetObject("yilin-basin-fotograflarina-deprem-damgasi1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
     }
 }

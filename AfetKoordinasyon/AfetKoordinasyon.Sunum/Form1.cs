@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using AfetKoordinasyon.Is;
@@ -45,6 +46,19 @@ namespace AfetKoordinasyon.Sunum
         // KULLANILABİLİRLİK (Hafta 14): ipuçları, kısayol, rol'e göre görünen butonlar
         private void ArayuzuDuzenle(bool koordinator)
         {
+            // GÖRÜNÜM: ortak tema + önemli butonlara renk
+            Tema.Uygula(this, Properties.Resources.ArkaPlanAna);
+            Tema.ButonAna(btnEkle);
+            Tema.ButonTehlike(btnSil);
+            Tema.ButonVurgu(btnAiOner);
+            btnAiOner.Font = Tema.Kalin(9f);
+            foreach (var b in new[] { btnRapor, btnDurumTakip, btnEslestirme, btnHarita })
+                b.Font = Tema.Kalin(11f);
+            lblAiSonuc.BackColor = Color.FromArgb(240, 248, 255);
+            lblAiSonuc.ForeColor = Tema.Metin;
+            lblAiSonuc.Font = Tema.Yazi(9f);
+            lblAiSonuc.Padding = new Padding(6);
+
             // Koordinatöre özel ekranlar diğer rollerde gizlenir
             // (önceden görünüyordu ama işlem yapınca yetki hatası veriyordu)
             btnEslestirme.Visible = koordinator;
